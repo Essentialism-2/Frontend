@@ -6,10 +6,10 @@ const LandingPage = () => {
     return (
         <div>
             <Link to='/login'>
-                <button>Login</button>
+                <Button>Login</Button>
             </Link>
             <Link to='/register'>
-                <button>Sign Up</button>
+                <Button>Sign Up</Button>
             </Link>
         </div>
     );
