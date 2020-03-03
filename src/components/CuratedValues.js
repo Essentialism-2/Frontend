@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,11 +34,9 @@ function intersection(a, b) {
 }
 
 const CuratedValues = props => {
-    const [values, setValues] = useState([props.values]);
-
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState(values);
+    const [left, setLeft] = React.useState([]);
     const [right, setRight] = React.useState([]);
 
     const leftChecked = intersection(checked, left);
@@ -56,10 +55,21 @@ const CuratedValues = props => {
         setChecked(newChecked);
     };
 
-    const handleAllRight = () => {
-        setRight(right.concat(left));
-        setLeft([]);
-    };
+    useEffect(() => {
+        const userId = localStorage.getItem('id')
+        axiosWithAuth()
+            .get(`/user/${userId}`)
+            .then(res => {
+                console.log('Curated GET response', res)
+                setLeft(res.data)
+            })
+            .catch(err => console.log('Curated GET error', err));
+    });
+
+    // const handleAllRight = () => {
+    //     setRight(right.concat(left));
+    //     setLeft([]);
+    // };
 
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
@@ -73,20 +83,20 @@ const CuratedValues = props => {
         setChecked(not(checked, rightChecked));
     };
 
-    const handleAllLeft = () => {
-        setLeft(left.concat(right));
-        setRight([]);
-    };
+    // const handleAllLeft = () => {
+    //     setLeft(left.concat(right));
+    //     setRight([]);
+    // };
 
     const customList = values => (
         <Paper className={classes.paper}>
-            <List dense component='div' role='list'>
+            <List dense component='span' role='list'>
                 {values.map(value => {
                     const labelId = `transfer-list-item-${value}-label`;
 
                     return (
                         <ListItem
-                            key={value}
+                            key={value.name}
                             role='listitem'
                             button
                             onClick={handleToggle(value)}>
@@ -100,7 +110,7 @@ const CuratedValues = props => {
                             </ListItemIcon>
                             <ListItemText
                                 id={labelId}
-                                primary={<Value title={value.title}/>}
+                                primary={<Value name={value.name} />}
                             />
                         </ListItem>
                     );
@@ -120,7 +130,7 @@ const CuratedValues = props => {
             <Grid item>{customList(left)}</Grid>
             <Grid item>
                 <Grid container direction='column' alignItems='center'>
-                    <Button
+                    {/* <Button
                         variant='outlined'
                         size='small'
                         className={classes.button}
@@ -128,7 +138,7 @@ const CuratedValues = props => {
                         disabled={left.length === 0}
                         aria-label='move all right'>
                         ≫
-                    </Button>
+                    </Button> */}
                     <Button
                         variant='outlined'
                         size='small'
@@ -147,7 +157,7 @@ const CuratedValues = props => {
                         aria-label='move selected left'>
                         &lt;
                     </Button>
-                    <Button
+                    {/* <Button
                         variant='outlined'
                         size='small'
                         className={classes.button}
@@ -155,7 +165,7 @@ const CuratedValues = props => {
                         disabled={right.length === 0}
                         aria-label='move all left'>
                         ≪
-                    </Button>
+                    </Button> */}
                 </Grid>
             </Grid>
             <Grid item>{customList(right)}</Grid>

@@ -17,7 +17,6 @@ const App = () => {
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/values-form' component={ValuesForm} />
               </Switch>
-
             </div>
         </Router>
     );

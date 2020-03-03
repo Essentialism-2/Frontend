@@ -34,31 +34,19 @@ function intersection(a, b) {
 }
 
 const ValuesList = () => {
-    const [values, setValues] = useState([
-        {
-            title: 'Nothing'
-        },
-        {
-            title: 'More nothing'
-        },
-        {
-            title: 'Even more nothing'
-        }
-    ]);
-
     useEffect(() => {
         axiosWithAuth()
             .get('/values')
             .then(res => {
-                console.log('GET response', res)
-                setValues(res.data)
+                console.log('GET response', res);
+                setLeft(res.data);
             })
             .catch(err => `GET error: ${err}`);
-    });
+    }, []);
 
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState(values);
+    const [left, setLeft] = React.useState([]);
     const [right, setRight] = React.useState([]);
 
     const leftChecked = intersection(checked, left);
@@ -77,17 +65,16 @@ const ValuesList = () => {
         setChecked(newChecked);
     };
 
-    const handleAllRight = () => {
-        setRight(right.concat(left));
-        setLeft([]);
-        setValues(leftChecked);
-    };
+    // const handleAllRight = () => {
+    //     setRight(right.concat(left));
+    //     setLeft([]);
+    // };
 
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
-        setValues(leftChecked);
+        assignValues(checked);
     };
 
     const handleCheckedLeft = () => {
@@ -95,21 +82,36 @@ const ValuesList = () => {
         setRight(not(right, rightChecked));
         setChecked(not(checked, rightChecked));
     };
+    console.log('Checked', checked);
+    // const handleAllLeft = () => {
+    //     setLeft(left.concat(right));
+    //     setRight([]);
+    // };
 
-    const handleAllLeft = () => {
-        setLeft(left.concat(right));
-        setRight([]);
+    const assignValues = checked => {
+        const userId = localStorage.getItem('id');
+        checked.map(item => {
+            axiosWithAuth()
+            .post(`/values/user/${userId}`, {
+                value_id: item.id,
+            })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log('POST error', err);
+            });
+        })
     };
 
-    const customList = values => (
+    const customList = left => (
         <Paper className={classes.paper}>
             <List dense component='div' role='list'>
-                {values.map(value => {
+                {left.map(value => {
                     const labelId = `transfer-list-item-${value}-label`;
-
                     return (
                         <ListItem
-                            key={value}
+                            key={value.name}
                             role='listitem'
                             button
                             onClick={handleToggle(value)}>
@@ -123,7 +125,12 @@ const ValuesList = () => {
                             </ListItemIcon>
                             <ListItemText
                                 id={labelId}
-                                primary={<Value title={value.title} />}
+                                primary={
+                                    <Value
+                                        name={value.name}
+                                        description={value.description}
+                                    />
+                                }
                             />
                         </ListItem>
                     );
@@ -143,7 +150,7 @@ const ValuesList = () => {
             <Grid item>{customList(left)}</Grid>
             <Grid item>
                 <Grid container direction='column' alignItems='center'>
-                    <Button
+                    {/* <Button
                         variant='outlined'
                         size='small'
                         className={classes.button}
@@ -151,7 +158,7 @@ const ValuesList = () => {
                         disabled={left.length === 0}
                         aria-label='move all right'>
                         ≫
-                    </Button>
+                    </Button> */}
                     <Button
                         variant='outlined'
                         size='small'
@@ -170,7 +177,7 @@ const ValuesList = () => {
                         aria-label='move selected left'>
                         &lt;
                     </Button>
-                    <Button
+                    {/* <Button
                         variant='outlined'
                         size='small'
                         className={classes.button}
@@ -178,7 +185,7 @@ const ValuesList = () => {
                         disabled={right.length === 0}
                         aria-label='move all left'>
                         ≪
-                    </Button>
+                    </Button> */}
                 </Grid>
             </Grid>
             <Grid item>{customList(right)}</Grid>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useForm from "./useForm";
 import validate from "./validateLogin"
 import Card from '@material-ui/core/Card';
@@ -7,12 +7,14 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const Login = () => {
 	const { handleChange, handleSubmit, values, errors } = useForm(submit, validate);
-	
+	// const [user, setUser] = useState({})
+
 	function submit() {
 		axiosWithAuth()
 		.post("/users/login", values)
 		.then(res => {
 			localStorage.setItem("token", res.data.token);
+			localStorage.setItem('id', res.data.id)
 			console.log(res);
 		})
 		.catch(err => {
