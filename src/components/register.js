@@ -3,12 +3,24 @@ import useForm from "./useForm";
 import validate from "./validateLogin"
 import Card from '@material-ui/core/Card';
 import { Button } from '@material-ui/core';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-const Login = () => {
+
+const Register = () => {
 	const { handleChange, handleSubmit, values, errors } = useForm(submit, validate);
 	
 	function submit() {
 		console.log("Submitted!");
+		axiosWithAuth()
+		.post("/users/register", values)
+		.then(res => {
+			localStorage.setItem("token", res.data.token);
+			console.log(res);
+		})
+		.catch(err => {
+			console.log('API Error ', err);
+		})
+
 	}
 
 	return (
@@ -65,4 +77,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default Register;
