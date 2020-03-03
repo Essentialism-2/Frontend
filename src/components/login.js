@@ -12,6 +12,7 @@ const Login = () => {
 		axiosWithAuth()
 		.post("/users/login", values)
 		.then(res => {
+			localStorage.setItem("token", res.data.token);
 			console.log(res);
 		})
 		.catch(err => {

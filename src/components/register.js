@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 
-const Login = () => {
+const Register = () => {
 	const { handleChange, handleSubmit, values, errors } = useForm(submit, validate);
 	
 	function submit() {
@@ -14,6 +14,7 @@ const Login = () => {
 		axiosWithAuth()
 		.post("/users/register", values)
 		.then(res => {
+			localStorage.setItem("token", res.data.token);
 			console.log(res);
 		})
 		.catch(err => {
@@ -76,4 +77,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default Register;
