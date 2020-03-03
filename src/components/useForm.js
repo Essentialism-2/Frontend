@@ -19,7 +19,6 @@ const useForm = (callback, validate ) => {
 	useEffect(() => {
 		if (Object.keys(errors).length === 0 && isSubmitting) {
 			//Function to run once login is valid and submitted
-			alert("Submit form successful!")
 			callback();
 		}
 	}, [errors]);
