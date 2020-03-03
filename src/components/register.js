@@ -4,7 +4,6 @@ import validate from "./validateLogin"
 import { Button, Card } from '@material-ui/core';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-
 const Register = props => {
 	const { handleChange, handleSubmit, values, errors } = useForm(submit, validate);
 	
@@ -15,7 +14,6 @@ const Register = props => {
 		.then(res => {
 			localStorage.setItem("token", res.data.token);
 			localStorage.setItem('id', res.data.id)
-			props.history.push('/values-form')
 			console.log(res);
 		})
 		.catch(err => {
