@@ -32,18 +32,8 @@ function intersection(a, b) {
     return a.filter(value => b.indexOf(value) !== -1);
 }
 
-const CuratedValues = () => {
-    const [values, setValues] = useState([
-        {
-            title: 'Nothing'
-        },
-        {
-            title: 'More nothing'
-        },
-        {
-            title: 'Even more nothing'
-        }
-    ]);
+const CuratedValues = props => {
+    const [values, setValues] = useState([props.values]);
 
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);

@@ -8,11 +8,9 @@ const App = () => {
     return (
         <Router>
             <div className='App'>
-              {/* <Switch>
-                <Route exact path='/' component={LandingPage} />
-              </Switch> */}
               <Switch>
-                <Route exact path='/' component={ValuesForm} />
+                <Route exact path='/' component={LandingPage} />
+                <Route exact path='/values-form' component={ValuesForm} />
               </Switch>
 
             </div>

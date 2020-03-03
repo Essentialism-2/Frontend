@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,6 +46,16 @@ const ValuesList = () => {
         }
     ]);
 
+    useEffect(() => {
+        axiosWithAuth()
+            .get('/values')
+            .then(res => {
+                console.log('GET response', res)
+                setValues(res.data)
+            })
+            .catch(err => `GET error: ${err}`);
+    });
+
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
     const [left, setLeft] = React.useState(values);
@@ -69,15 +80,14 @@ const ValuesList = () => {
     const handleAllRight = () => {
         setRight(right.concat(left));
         setLeft([]);
-        setValues(leftChecked)
-
+        setValues(leftChecked);
     };
 
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
-        setValues(leftChecked)
+        setValues(leftChecked);
     };
 
     const handleCheckedLeft = () => {
@@ -113,7 +123,7 @@ const ValuesList = () => {
                             </ListItemIcon>
                             <ListItemText
                                 id={labelId}
-                                primary={<Value title={value.title}/>}
+                                primary={<Value title={value.title} />}
                             />
                         </ListItem>
                     );

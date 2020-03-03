@@ -11,8 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import ValuesList from './ValuesList';
 import CuratedValues from './CuratedValues';
 import FinalValues from './FinalValues';
-import ProjectsForm from './ProjectsForm';
-import Comparison from './Comparison';
 import Value from './Value';
 
 const useStyles = makeStyles(theme => ({
@@ -32,10 +30,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-    return ['Select Values', 'Refine values', 'Think about your values', 'Add projects', 'Compare'];
+    return ['Select Values', 'Refine values', 'Think about your values'];
 }
 
 function getStepContent(step) {
+
     switch (step) {
         case 0:
             return <ValuesList />
@@ -43,10 +42,6 @@ function getStepContent(step) {
             return <CuratedValues />
         case 2:
             return <FinalValues />
-        case 3:
-            return <ProjectsForm />
-        case 4:
-            return <Comparison />
             
         default:
             return 'Unknown step';
