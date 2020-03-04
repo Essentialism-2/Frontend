@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Value from './Value';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { RightContext } from '../utils/store';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,6 +34,7 @@ function intersection(a, b) {
     return a.filter(value => b.indexOf(value) !== -1);
 }
 
+
 const ValuesList = () => {
     useEffect(() => {
         axiosWithAuth()
@@ -45,9 +47,9 @@ const ValuesList = () => {
     }, []);
 
     const classes = useStyles();
-    const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState([]);
-    const [right, setRight] = React.useState([]);
+    const [checked, setChecked] = useState([]);
+    const [left, setLeft] = useState([]);
+    const [right, setRight] = useContext(RightContext);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -74,7 +76,7 @@ const ValuesList = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
-        assignValues(checked);
+        // assignValues(checked);
     };
 
     const handleCheckedLeft = () => {
@@ -88,31 +90,31 @@ const ValuesList = () => {
     //     setRight([]);
     // };
 
-    const assignValues = checked => {
-        const userId = localStorage.getItem('id');
-        checked.map(item => {
-            axiosWithAuth()
-            .post(`/values/user/${userId}`, {
-                value_id: item.id
-            })
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log('POST error', err);
-            });
-        })
-    };
+    // const assignValues = checked => {
+    //     const userId = localStorage.getItem('id');
+    //     checked.map(item => {
+    //         axiosWithAuth()
+    //         .post(`/values/user/${userId}`, {
+    //             value_id: item.id
+    //         })
+    //         .then(res => {
+    //             console.log(res);
+    //         })
+    //         .catch(err => {
+    //             console.log('POST error', err);
+    //         });
+    //     })
+    // };
     
 
     const customList = left => (
         <Paper className={classes.paper}>
-            <List dense component='div' role='list'>
+            <List dense component='span' role='list'>
                 {left.map(value => {
                     const labelId = `transfer-list-item-${value}-label`;
                     return (
                         <ListItem
-                            key={value.name}
+                            key={value.id}
                             role='listitem'
                             button
                             onClick={handleToggle(value)}>
