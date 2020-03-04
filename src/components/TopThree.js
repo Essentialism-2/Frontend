@@ -45,6 +45,7 @@ const TopThree = () => {
 
     const [ topThreeValues, setTopThreeValues ] = useState([]);
     const [ loading, setLoading ] = useState(false)
+    const [ listOfValues, setListOfValues ] = useState([])
 
     if(topThreeValues.length < 3) {
         setTopThreeValues(
@@ -56,13 +57,26 @@ const TopThree = () => {
     }
 
     useEffect(() => {
+        axiosWithAuth()
+        .get('https://buildweek-essentialism.herokuapp.com/api/values/')
+        .then(res => {
+            console.log('all values', res)
+            setListOfValues(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        // setListOfValues()
+    },[])
+
+    useEffect(() => {
         setLoading(true)
         axiosWithAuth()
         .get(`https://buildweek-essentialism.herokuapp.com/api/values/user/2`)
         .then(res => {
-            console.log(res.data.filter(item => item.Top_Three === true))
+            console.log('your top three values', res.data.filter(item => item.Top_Three === true))
             setTopThreeValues(res.data.filter(item => item.Top_Three === true))
-            // console.log(res.data)
+            console.log('all your values', res.data)
             setLoading(false)
 
         })
@@ -78,9 +92,9 @@ const TopThree = () => {
             value_id: valueId,
             top_three: false
         }
-        axiosWithAuth()
         setLoading(true)
-        .put('https://buildweek-essentialism.herokuapp.com/api/values/user/1', send)
+        axiosWithAuth()
+        .delete(`https://buildweek-essentialism.herokuapp.com/api/values/delete/${valueId}`)
         .then(res => {
             console.log(res)
             axiosWithAuth()
@@ -126,7 +140,7 @@ const TopThree = () => {
                         {item.Value_description}
                         </Typography>
                     </CardContent>
-                    {!true ?
+                    {!item.addValue ?
                     <CardActions className={classes.valueRemoveContainer}>
                         
                         <Fab onClick={() => changeTopThree(item.Value_Id)} color="secondary" aria-label="add">
@@ -134,7 +148,9 @@ const TopThree = () => {
                         </Fab>
                     </CardActions>
                     :
-                    <p>Add here</p>
+                    <ul>
+                        {listOfValues.map(item => <li>{item.name}</li>)}
+                    </ul>
                     }
                     </Card>
 
