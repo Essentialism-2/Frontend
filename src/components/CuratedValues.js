@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Value from './Value';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { RightContext } from '../utils/store';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,11 +34,11 @@ function intersection(a, b) {
     return a.filter(value => b.indexOf(value) !== -1);
 }
 
-const CuratedValues = props => {
+const CuratedValues = () => {
     const classes = useStyles();
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
-    const [right, setRight] = useState([]);
+    const [right, setRight] = useContext(RightContext);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -75,7 +76,7 @@ const CuratedValues = props => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
-        setTopThree(checked)
+        // setTopThree(checked)
     };
 
     const handleCheckedLeft = () => {
@@ -91,21 +92,21 @@ const CuratedValues = props => {
     //     setRight([]);
     // };
 
-    const setTopThree = checked => {
-        const userId = localStorage.getItem('id');
-        checked.map(item => {
-            console.log('Item', item)
-            axiosWithAuth()
-                .put(`/values/user/${userId}`, {
-                    value_id: item.Value_Id,
-                    top_three: true
-                })
-                .then(res => {
-                    console.log('PUT response', res)
-                })
-                .catch(err => console.log('PUT error', err));
-        });
-    };
+    // const setTopThree = checked => {
+    //     const userId = localStorage.getItem('id');
+    //     checked.map(item => {
+    //         console.log('Item', item)
+    //         axiosWithAuth()
+    //             .put(`/values/user/${userId}`, {
+    //                 value_id: item.Value_Id,
+    //                 top_three: true
+    //             })
+    //             .then(res => {
+    //                 console.log('PUT response', res)
+    //             })
+    //             .catch(err => console.log('PUT error', err));
+    //     });
+    // };
 
     const customList = left => (
         <Paper className={classes.paper}>
@@ -115,7 +116,7 @@ const CuratedValues = props => {
 
                     return (
                         <ListItem
-                            key={value.name}
+                            key={value.id}
                             role='listitem'
                             button
                             onClick={handleToggle(value)}>

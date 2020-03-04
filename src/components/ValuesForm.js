@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import ValuesList from './ValuesList';
 import CuratedValues from './CuratedValues';
 import FinalValues from './FinalValues';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { DescriptionContext, RightContext } from '../utils/store';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,28 +35,78 @@ function getSteps() {
 }
 
 function getStepContent(step) {
-
     switch (step) {
         case 0:
-            return <ValuesList />
+            return <ValuesList />;
         case 1:
-            return <CuratedValues />
+            return <CuratedValues />;
         case 2:
-            return <FinalValues />
-            
+            return <FinalValues />;
+
         default:
             return 'Unknown step';
     }
 }
 
 const ValuesForm = () => {
+    const [right] = useContext(RightContext);
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [activeStep, setActiveStep] = useState(0);
+    const [description, setDescription] = useContext(DescriptionContext)
     const steps = getSteps();
 
-    const handleNext = () => {
-        setActiveStep(prevActiveStep => prevActiveStep + 1);
+    const assignValues = () => {
+        const userId = localStorage.getItem('id');
+        right.map(item => {
+            axiosWithAuth()
+                .post(`/values/user/${userId}`, {
+                    value_id: item.id
+                })
+                .then(res => {
+                    console.log('POST response', res);
+                })
+                .catch(err => {
+                    console.log('POST error', err);
+                });
+        });
+    };
 
+    const setTopThree = () => {
+        const userId = localStorage.getItem('id');
+        right.map(item => {
+            console.log('Item', item);
+            axiosWithAuth()
+                .put(`/values/user/${userId}`, {
+                    value_id: item.Value_Id,
+                    top_three: true
+                })
+                .then(res => {
+                    console.log('PUT response', res);
+                })
+                .catch(err => console.log('PUT error', err));
+        });
+    };
+
+    const sendDescription = () => {
+        const userId = localStorage.getItem('id');
+        right.map(item => {
+            axiosWithAuth()
+                .put(`/values/user/${userId}`, {
+                    value_id: item.Value_Id,
+                    description: item.description
+                })
+                .then(res => console.log('Description PUT response', res))
+                .catch(err => console.log('Description PUT error', err));
+        });
+    };
+
+    const handleNext = () => {
+        if (activeStep === 0) {
+            assignValues(right);
+        } else if (activeStep === 1) {
+            setTopThree(right);
+        }
+        setActiveStep(prevActiveStep => prevActiveStep + 1);
     };
 
     const handleBack = () => {
@@ -72,7 +124,9 @@ const ValuesForm = () => {
                     <Step key={label}>
                         <StepLabel>{label}</StepLabel>
                         <StepContent>
-                            <Typography component='span'>{getStepContent(index)}</Typography>
+                            <Typography component='span'>
+                                {getStepContent(index)}
+                            </Typography>
                             <div className={classes.actionsContainer}>
                                 <div>
                                     <Button
@@ -101,8 +155,13 @@ const ValuesForm = () => {
                     <Typography>
                         All steps completed - you&apos;re finished
                     </Typography>
-                    <Link to='/dashboard' style={{textDecoration: 'none'}}>
-                        <Button className={classes.button} color='primary' variant='contained' >Dashboard</Button>
+                    <Link to='/dashboard' style={{ textDecoration: 'none' }}>
+                        <Button
+                            className={classes.button}
+                            color='primary'
+                            variant='contained'>
+                            Dashboard
+                        </Button>
                     </Link>
                     <Button onClick={handleReset} className={classes.button}>
                         Reset
@@ -111,6 +170,6 @@ const ValuesForm = () => {
             )}
         </div>
     );
-}
+};
 
 export default ValuesForm;
