@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,12 +34,10 @@ function intersection(a, b) {
 }
 
 const CuratedValues = props => {
-    const [values, setValues] = useState([props.values]);
-
     const classes = useStyles();
-    const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState(values);
-    const [right, setRight] = React.useState([]);
+    const [checked, setChecked] = useState([]);
+    const [left, setLeft] = useState([]);
+    const [right, setRight] = useState([]);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -56,15 +55,27 @@ const CuratedValues = props => {
         setChecked(newChecked);
     };
 
-    const handleAllRight = () => {
-        setRight(right.concat(left));
-        setLeft([]);
-    };
+    useEffect(() => {
+        const userId = localStorage.getItem('id');
+        axiosWithAuth()
+            .get(`/values/user/${userId}`)
+            .then(res => {
+                console.log('Curated GET response', res);
+                setLeft(res.data);
+            }, [])
+            .catch(err => console.log('Curated GET error', err));
+    }, []);
+
+    // const handleAllRight = () => {
+    //     setRight(right.concat(left));
+    //     setLeft([]);
+    // };
 
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
+        setTopThree(checked)
     };
 
     const handleCheckedLeft = () => {
@@ -72,21 +83,39 @@ const CuratedValues = props => {
         setRight(not(right, rightChecked));
         setChecked(not(checked, rightChecked));
     };
+    console.log('Checked', checked);
 
-    const handleAllLeft = () => {
-        setLeft(left.concat(right));
-        setRight([]);
+
+    // const handleAllLeft = () => {
+    //     setLeft(left.concat(right));
+    //     setRight([]);
+    // };
+
+    const setTopThree = checked => {
+        const userId = localStorage.getItem('id');
+        checked.map(item => {
+            console.log('Item', item)
+            axiosWithAuth()
+                .put(`/values/user/${userId}`, {
+                    value_id: item.Value_Id,
+                    top_three: true
+                })
+                .then(res => {
+                    console.log('PUT response', res)
+                })
+                .catch(err => console.log('PUT error', err));
+        });
     };
 
-    const customList = values => (
+    const customList = left => (
         <Paper className={classes.paper}>
-            <List dense component='div' role='list'>
-                {values.map(value => {
+            <List dense component='span' role='list'>
+                {left.map(value => {
                     const labelId = `transfer-list-item-${value}-label`;
 
                     return (
                         <ListItem
-                            key={value}
+                            key={value.name}
                             role='listitem'
                             button
                             onClick={handleToggle(value)}>
@@ -100,7 +129,12 @@ const CuratedValues = props => {
                             </ListItemIcon>
                             <ListItemText
                                 id={labelId}
-                                primary={<Value title={value.title}/>}
+                                primary={
+                                    <Value
+                                        name={value.Value_name}
+                                        description={value.Value_description}
+                                    />
+                                }
                             />
                         </ListItem>
                     );
@@ -120,7 +154,7 @@ const CuratedValues = props => {
             <Grid item>{customList(left)}</Grid>
             <Grid item>
                 <Grid container direction='column' alignItems='center'>
-                    <Button
+                    {/* <Button
                         variant='outlined'
                         size='small'
                         className={classes.button}
@@ -128,7 +162,7 @@ const CuratedValues = props => {
                         disabled={left.length === 0}
                         aria-label='move all right'>
                         ≫
-                    </Button>
+                    </Button> */}
                     <Button
                         variant='outlined'
                         size='small'
@@ -147,7 +181,7 @@ const CuratedValues = props => {
                         aria-label='move selected left'>
                         &lt;
                     </Button>
-                    <Button
+                    {/* <Button
                         variant='outlined'
                         size='small'
                         className={classes.button}
@@ -155,7 +189,7 @@ const CuratedValues = props => {
                         disabled={right.length === 0}
                         aria-label='move all left'>
                         ≪
-                    </Button>
+                    </Button> */}
                 </Grid>
             </Grid>
             <Grid item>{customList(right)}</Grid>

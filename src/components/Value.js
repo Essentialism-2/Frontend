@@ -27,12 +27,18 @@ const Value = props => {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <Typography className={classes.title} variant='h6' component='h2'>
-                    {props.title}
+                <Typography
+                    className={classes.title}
+                    variant='h6'
+                    component='h2'>
+                    {props.name}
+                </Typography>
+                <Typography variant='body2' component='p'>
+                    {props.description}
                 </Typography>
             </CardContent>
         </Card>
     );
-}
+};
 
 export default Value;

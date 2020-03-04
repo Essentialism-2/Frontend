@@ -11,7 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import ValuesList from './ValuesList';
 import CuratedValues from './CuratedValues';
 import FinalValues from './FinalValues';
-import Value from './Value';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -73,7 +72,7 @@ const ValuesForm = () => {
                     <Step key={label}>
                         <StepLabel>{label}</StepLabel>
                         <StepContent>
-                            <Typography>{getStepContent(index)}</Typography>
+                            <Typography component='span'>{getStepContent(index)}</Typography>
                             <div className={classes.actionsContainer}>
                                 <div>
                                     <Button

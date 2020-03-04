@@ -1,12 +1,10 @@
 import React from 'react';
 import useForm from "./useForm";
 import validate from "./validateLogin"
-import Card from '@material-ui/core/Card';
-import { Button } from '@material-ui/core';
+import { Button, Card } from '@material-ui/core';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-
-const Register = () => {
+const Register = props => {
 	const { handleChange, handleSubmit, values, errors } = useForm(submit, validate);
 	
 	function submit() {
@@ -15,6 +13,8 @@ const Register = () => {
 		.post("/users/register", values)
 		.then(res => {
 			localStorage.setItem("token", res.data.token);
+			localStorage.setItem('id', res.data.id)
+			props.history.push('/values-form')
 			console.log(res);
 		})
 		.catch(err => {
