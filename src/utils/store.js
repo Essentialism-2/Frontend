@@ -5,7 +5,7 @@ export const DescriptionContext = React.createContext([]);
 
 const Store = ({ children }) => {
     const [right, setRight] = useState([]);
-    const [description, setDescription] = useState({description:''})
+    const [description, setDescription] = useState()
 
     return (
         <RightContext.Provider value={[right, setRight]}>
