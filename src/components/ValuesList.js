@@ -93,7 +93,7 @@ const ValuesList = () => {
         checked.map(item => {
             axiosWithAuth()
             .post(`/values/user/${userId}`, {
-                value_id: item.id,
+                value_id: item.id
             })
             .then(res => {
                 console.log(res);
@@ -103,6 +103,7 @@ const ValuesList = () => {
             });
         })
     };
+    
 
     const customList = left => (
         <Paper className={classes.paper}>

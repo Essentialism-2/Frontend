@@ -35,9 +35,9 @@ function intersection(a, b) {
 
 const CuratedValues = props => {
     const classes = useStyles();
-    const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState([]);
-    const [right, setRight] = React.useState([]);
+    const [checked, setChecked] = useState([]);
+    const [left, setLeft] = useState([]);
+    const [right, setRight] = useState([]);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -56,15 +56,15 @@ const CuratedValues = props => {
     };
 
     useEffect(() => {
-        const userId = localStorage.getItem('id')
+        const userId = localStorage.getItem('id');
         axiosWithAuth()
-            .get(`/user/${userId}`)
+            .get(`/values/user/${userId}`)
             .then(res => {
-                console.log('Curated GET response', res)
-                setLeft(res.data)
-            })
+                console.log('Curated GET response', res);
+                setLeft(res.data);
+            }, [])
             .catch(err => console.log('Curated GET error', err));
-    });
+    }, []);
 
     // const handleAllRight = () => {
     //     setRight(right.concat(left));
@@ -75,6 +75,7 @@ const CuratedValues = props => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
+        setTopThree(checked)
     };
 
     const handleCheckedLeft = () => {
@@ -82,16 +83,34 @@ const CuratedValues = props => {
         setRight(not(right, rightChecked));
         setChecked(not(checked, rightChecked));
     };
+    console.log('Checked', checked);
+
 
     // const handleAllLeft = () => {
     //     setLeft(left.concat(right));
     //     setRight([]);
     // };
 
-    const customList = values => (
+    const setTopThree = checked => {
+        const userId = localStorage.getItem('id');
+        checked.map(item => {
+            console.log('Item', item)
+            axiosWithAuth()
+                .put(`/values/user/${userId}`, {
+                    value_id: item.Value_Id,
+                    top_three: true
+                })
+                .then(res => {
+                    console.log('PUT response', res)
+                })
+                .catch(err => console.log('PUT error', err));
+        });
+    };
+
+    const customList = left => (
         <Paper className={classes.paper}>
             <List dense component='span' role='list'>
-                {values.map(value => {
+                {left.map(value => {
                     const labelId = `transfer-list-item-${value}-label`;
 
                     return (
@@ -110,7 +129,12 @@ const CuratedValues = props => {
                             </ListItemIcon>
                             <ListItemText
                                 id={labelId}
-                                primary={<Value name={value.name} />}
+                                primary={
+                                    <Value
+                                        name={value.Value_name}
+                                        description={value.Value_description}
+                                    />
+                                }
                             />
                         </ListItem>
                     );
