@@ -3,6 +3,7 @@ import useForm from "./useForm";
 import validate from "./validateLogin"
 import { Button, Card } from '@material-ui/core';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { withRouter } from 'react-router-dom';
 
 const Register = props => {
 	const { handleChange, handleSubmit, values, errors } = useForm(submit, validate);
@@ -77,4 +78,4 @@ const Register = props => {
 	);
 };
 
-export default Register;
+export default withRouter(Register);

@@ -25,6 +25,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import TopThree from './TopThree';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -247,6 +248,7 @@ const Dashboard = () => {
             </div>
           </Toolbar>
         </AppBar>
+        <TopThree />
         {renderMobileMenu}
         {renderMenu}
         <div className={classes.root}>

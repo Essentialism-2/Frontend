@@ -93,7 +93,7 @@ const ValuesForm = () => {
             axiosWithAuth()
                 .put(`/values/user/${userId}`, {
                     value_id: item.Value_Id,
-                    description: item.description
+                    description: description.description
                 })
                 .then(res => console.log('Description PUT response', res))
                 .catch(err => console.log('Description PUT error', err));
@@ -105,6 +105,8 @@ const ValuesForm = () => {
             assignValues(right);
         } else if (activeStep === 1) {
             setTopThree(right);
+        } else {
+            sendDescription(right)
         }
         setActiveStep(prevActiveStep => prevActiveStep + 1);
     };
