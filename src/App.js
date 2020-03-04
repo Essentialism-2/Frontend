@@ -5,7 +5,9 @@ import ValuesForm from './components/ValuesForm';
 import './App.css';
 import Login from './components/Login';
 import Register from './components/Register';
-import SignOut from './components/SignOut'
+import SignOut from './components/SignOut';
+import Dashboard from './components/Dashboard';
+import TopThree from './components/TopThree';
 
 const App = () => {
     return (
@@ -22,8 +24,9 @@ const App = () => {
                     <ValuesForm />
                 </Route>
                 <Route path='/signout'>
-                    <SignOut/>
+                    <SignOut />
                 </Route>
+                <Route path='/dashboard' component={Dashboard} />
             </Switch>
         </div>
     );
