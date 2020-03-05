@@ -27,7 +27,8 @@ const useStyles = makeStyles(theme => ({
         background: theme.pallette.primary.main,
         '&:hover': {
             background: theme.pallette.primary.dark
-        }
+        },
+        color: 'white'
     }
 }));
 

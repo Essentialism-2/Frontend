@@ -10,13 +10,15 @@ const useStyles = makeStyles(theme => ({
         background: theme.pallette.primary.main,
         '&:hover': {
             background: theme.pallette.primary.dark
-        }
+        },
+        color: 'white'
     }
 }));
 
 const OtherForm = props => {
     const [value, setValue] = useState([{ name: null }]);
     const classes = useStyles();
+    const userID = localStorage.getItem('id');
 
     function handleChange(i, event) {
         const values = [...value];
@@ -54,7 +56,6 @@ const OtherForm = props => {
     }
 
     function assignValue(valueID) {
-        const userID = localStorage.getItem('id');
         axiosWithAuth()
             .post(`/values/user/${userID}`, { value_id: valueID })
             .then(res => {
