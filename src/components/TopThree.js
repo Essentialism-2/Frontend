@@ -67,6 +67,7 @@ const TopThree = userId => {
     const [open, setOpen] = React.useState(false);
     const [newValue, setNewValue] = useState({});
 
+
     const handleChange = event => {
         setNewValue({ value_id: event.target.value, top_three: true });
         console.log('new value set', newValue);
@@ -79,6 +80,11 @@ const TopThree = userId => {
     const handleClose = () => {
         setOpen(false);
     };
+    if(topThreeValues.length < 3) {
+        setTopThreeValues(
+           [ ...topThreeValues,
+                {addValue: true, key: Math.random()}
+            ]
 
     if (topThreeValues.length < 3) {
         setTopThreeValues([...topThreeValues, { addValue: true }]);
@@ -86,14 +92,14 @@ const TopThree = userId => {
 
     useEffect(() => {
         axiosWithAuth()
-            .get('/values/')
-            .then(res => {
-                console.log('all values', res);
-                setListOfValues(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        .get('/values/')
+        .then(res => {
+            console.log('all values', res)
+            setListOfValues(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
         // setListOfValues()
     }, []);
 
@@ -128,9 +134,12 @@ const TopThree = userId => {
         };
         setLoading(true);
         axiosWithAuth()
-            .delete(
-                `/values/delete/${valueId}`
-            )
+        .delete(`/values/delete/${valueId}`)
+        .then(res => {
+            console.log(res)
+            axiosWithAuth()
+
+            .get(`/values/user/${userId}`)
             .then(res => {
                 console.log(res);
                 axiosWithAuth()
@@ -161,10 +170,13 @@ const TopThree = userId => {
         setLoading(true);
 
         axiosWithAuth()
-            .post(
-                `/values/user/${userId}`,
-                newValue
-            )
+        .post(`/values/user/${userId}`, newValue)
+        .then(res => {
+            console.log(res)
+            setOpen(false);
+            axiosWithAuth()
+
+            .get(`/values/user/${userId}`)
             .then(res => {
                 console.log(res);
                 setOpen(false);
@@ -195,127 +207,88 @@ const TopThree = userId => {
     return (
         <div>
             <h1>Your Top 3 Values</h1>
-            {!loading ? (
-                <div className={classes.container}>
-                    {topThreeValues.map(
-                        item => (
-                            <Card key={item.Value_Id} className={classes.root}>
-                                <CardContent>
-                                    <Typography
-                                        className={classes.title}
-                                        color='textSecondary'
-                                        gutterBottom></Typography>
-                                    <Typography variant='h5' component='h2'>
-                                        {item.Value_name}
-                                    </Typography>
-                                    <Typography
-                                        className={classes.pos}
-                                        color='textSecondary'></Typography>
-                                    <Typography variant='body2' component='p'>
-                                        {item.Value_description}
-                                    </Typography>
-                                </CardContent>
-                                {!item.addValue ? (
-                                    <CardActions
-                                        className={
-                                            classes.valueRemoveContainer
-                                        }>
-                                        <Fab
-                                            onClick={() =>
-                                                changeTopThree(item.Value_Id)
-                                            }
-                                            color='secondary'
-                                            aria-label='add'>
-                                            <HighlightOffIcon />
-                                        </Fab>
-                                    </CardActions>
-                                ) : (
-                                    // <ul>
-                                    //     {listOfValues.map(item => <li>{item.name}</li>)}
-                                    // </ul>
-                                    <div>
-                                        <Button onClick={handleClickOpen}>
-                                            Select New Value
-                                        </Button>
-                                        <Dialog
-                                            disableBackdropClick
-                                            disableEscapeKeyDown
-                                            open={open}
-                                            onClose={handleClose}>
-                                            <DialogTitle>
-                                                Choose Value
-                                            </DialogTitle>
-                                            <DialogContent>
-                                                <form
-                                                    className={
-                                                        classes.container
-                                                    }>
-                                                    <FormControl
-                                                        className={
-                                                            classes.formControl
-                                                        }>
-                                                        <InputLabel htmlFor='demo-dialog-native'>
-                                                            New Value
-                                                        </InputLabel>
-                                                        <Select
-                                                            native
-                                                            value={
-                                                                newValue.value_id
-                                                            }
-                                                            onChange={
-                                                                handleChange
-                                                            }
-                                                            input={
-                                                                <Input id='demo-dialog-native' />
-                                                            }>
-                                                            <option value='' />
-                                                            {listOfValues.map(
-                                                                item => (
-                                                                    <option
-                                                                        value={
-                                                                            item.id
-                                                                        }>
-                                                                        {
-                                                                            item.name
-                                                                        }
-                                                                    </option>
-                                                                )
-                                                            )}
-                                                        </Select>
-                                                    </FormControl>
-                                                </form>
-                                            </DialogContent>
-                                            <DialogActions>
-                                                <Button
-                                                    onClick={handleClose}
-                                                    color='primary'>
-                                                    Cancel
-                                                </Button>
-                                                <Button
-                                                    onClick={addValueToUser}
-                                                    color='primary'>
-                                                    Add
-                                                </Button>
-                                            </DialogActions>
-                                        </Dialog>
-                                    </div>
-                                )}
-                            </Card>
-                        )
+            {!loading ? 
+            <div className={classes.container}>
+                {topThreeValues.map(item => 
+                    <Card key={item.Value_Id || item.key} className={classes.root}>
+                    <CardContent>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        
+                        </Typography>
+                        <Typography variant="h5" component="h2">
+                          {item.Value_name}
+                        </Typography>
+                        <Typography className={classes.pos} color="textSecondary">
+                        
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                          {item.Value_description}
+                        </Typography>
+                    </CardContent>
+                    {!item.addValue ?
+                    <CardActions className={classes.valueRemoveContainer}>
+                        <Fab onClick={() => changeTopThree(item.Value_Id)} color="secondary" aria-label="add">
+                            <HighlightOffIcon   />
+                        </Fab>
+                    </CardActions>
+                    :
+                    // <ul>
+                    //     {listOfValues.map(item => <li>{item.name}</li>)}
+                    // </ul>
+                    <div>
+      <Button onClick={handleClickOpen}>Select New Value</Button>
+      <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>
+        <DialogTitle>Choose Value</DialogTitle>
+        <DialogContent>
+          <form className={classes.container}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="demo-dialog-native">New Value</InputLabel>
+              <Select
+                native
+                value={newValue.value_id}
+                onChange={handleChange}
+                input={<Input id="demo-dialog-native" />}
+              >
+
+                <option value="" />
+
+                {listOfValues.map(item =>  <option key={item.id}  value={item.id}>{item.name}</option>)}
+
+              </Select>
+            </FormControl>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={addValueToUser} color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+                    }
+                    </Card>
+
+                    // :
+                    //     <p>some other stuff</p>
 
                         // :
                         //     <p>some other stuff</p>
                     )}
-                </div>
-            ) : (
-                <ClipLoader
-                    //   css={override}
-                    size={150}
-                    //size={"150px"} this also works
-                    color={'#123abc'}
-                    loading={loading}
-                />
-            )}
+                
+            </div>
+            :
+            <ClipLoader
+        //   css={override}
+          size={150}
+          //size={"150px"} this also works
+          color={"#123abc"}
+          loading={loading}
+        />
+}
+
         </div>
     );
 };

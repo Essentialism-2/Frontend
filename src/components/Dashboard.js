@@ -1,4 +1,6 @@
 import React from 'react';
+import ProjectsForm from './ProjectsForm';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 //floating action button
 import { makeStyles } from '@material-ui/core/styles';
@@ -193,6 +195,8 @@ const Dashboard = () => {
       </Menu>
     );
 
+
+
     return (
         <div className={classes.grow}>
         <AppBar position="static" className={classes.appBar}>
@@ -258,13 +262,10 @@ const Dashboard = () => {
           </Toolbar>
         </AppBar>
         <TopThree />
+        <ProjectsForm />
         {renderMobileMenu}
         {renderMenu}
-        <div className={classes.root}>
-                <Fab className={classes.addProject}  color="primary" aria-label="add">
-                    <AddIcon  />
-                </Fab>
-            </div>
+
       </div>
 
     )
