@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
+import { ClipLoader } from "react-spinners";
+
+
 // M-UI CARD
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -147,6 +150,7 @@ const TopThree = () => {
     }
 
     const addValueToUser = () => {
+        setLoading(true)
 
         axiosWithAuth()
         .post('https://buildweek-essentialism.herokuapp.com/api/values/user/1', newValue)
@@ -169,6 +173,8 @@ const TopThree = () => {
         })
         .catch(err => {
             console.log(err)
+            setLoading(false)
+
         })
     }
 
@@ -177,7 +183,7 @@ const TopThree = () => {
     return (
         <div>
             <h1>Your Top 3 Values</h1>
-            {loading && 'is loading...'}
+            {!loading ? 
             <div className={classes.container}>
                 {topThreeValues.map(item => 
                     <Card key={item.Value_Id} className={classes.root}>
@@ -246,6 +252,15 @@ const TopThree = () => {
                     )}
                 
             </div>
+            :
+            <ClipLoader
+        //   css={override}
+          size={150}
+          //size={"150px"} this also works
+          color={"#123abc"}
+          loading={loading}
+        />
+}
         </div>
 
     )
