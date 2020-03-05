@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState} from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 //Components
@@ -16,6 +16,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import NavigationIcon from '@material-ui/icons/Navigation';
 
 //dashboard
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import { fade } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -114,6 +115,11 @@ const useStyles = makeStyles(theme => ({
     },
     appBar: {
       backgroundColor: theme.pallette.primary.main
+    },
+    bottomLeftFixed: {
+        position: 'fixed',
+        bottom: 10,
+        left: 10
     }
   }));
 
@@ -121,6 +127,8 @@ const Dashboard = () => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [editing, setEditing] = useState(false);
+
   
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -132,6 +140,10 @@ const Dashboard = () => {
     const handleMobileMenuClose = () => {
       setMobileMoreAnchorEl(null);
     };
+
+    const handleEditing = () => {
+      setEditing(!editing)
+  }
   
     const handleMenuClose = () => {
       setAnchorEl(null);
@@ -266,11 +278,14 @@ const Dashboard = () => {
             </div>
           </Toolbar>
         </AppBar>
-        <TopThree />
-        <ProjectsForm />
+        <TopThree editing={editing} />
+        <ProjectsForm editing={editing} />
         {renderMobileMenu}
         {renderMenu}
             
+        <Fab onClick={handleEditing} className={classes.bottomLeftFixed}  color="primary" aria-label="add">
+            <SettingsIcon />
+        </Fab>
       </div>
 
     )

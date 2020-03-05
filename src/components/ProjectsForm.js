@@ -95,13 +95,12 @@ const useStyles = makeStyles({
   }
 });
 
-const ProjectsForm = () => {
+const ProjectsForm = (props) => {
     const classes = useStyles();
     const [projects, setProjects ] = useState([]);
     const [newProject, setNewProject] = useState({})
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
-    const [editing, setEditing] = useState(false);
     const [listOfValues, setListOfValues] = useState([]);
     const [newValue, setNewValue] = useState({});
     const [loading, setLoading] = useState(false);
@@ -125,9 +124,9 @@ const ProjectsForm = () => {
         // setListOfValues()
     }, []);
 
-    const handleEditing = () => {
-        setEditing(!editing)
-    }
+    // const handleEditing = () => {
+    //     setEditing(!editing)
+    // }
 
     const handleOpen = () => {
         setOpen(true);
@@ -291,7 +290,7 @@ const ProjectsForm = () => {
 
 
                     <CardActions>
-                        {editing ? 
+                        {props.editing ? 
                             <Button onClick={() => deleteProject(project.id)} className={classes.bottomRightRelative} variant="contained" color="secondary">
                                 Delete Project
                             </Button>
@@ -335,15 +334,15 @@ const ProjectsForm = () => {
                 <form onSubmit={addProject} className={classes.projectForm} noValidate autoComplete="off">
                     <TextField onChange={handleChange} name='name' id="name" label="Name" />
                     <TextField onChange={handleChange} name='description' id="description" label="Description" />
-                    <Button type='submit' >Add</Button>
+                    <Button color="primary"  variant="contained" type='submit' >Add</Button>
                 </form>
                 </div>
             </Modal>
 
             {/* <Button className={classes.bottomLeftFixed}>#</Button> */}
-            <Fab onClick={handleEditing} className={classes.bottomLeftFixed}  color="primary" aria-label="add">
+            {/* <Fab onClick={handleEditing} className={classes.bottomLeftFixed}  color="primary" aria-label="add">
                 <SettingsIcon />
-            </Fab>
+            </Fab> */}
 
 
         </div>

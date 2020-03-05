@@ -56,7 +56,7 @@ const useStyles = makeStyles({
     }
 });
 
-const TopThree = () => {
+const TopThree = (props) => {
     const classes = useStyles();
     const userID = localStorage.getItem('id');
     const [topThreeValues, setTopThreeValues] = useState([]);
@@ -218,21 +218,24 @@ const TopThree = () => {
                                         className={
                                             classes.valueRemoveContainer
                                         }>
+                                            {props.editing &&
                                         <Fab
                                             onClick={() =>
                                                 changeTopThree(item.Value_Id)
                                             }
                                             color='secondary'
                                             aria-label='add'>
-                                            <HighlightOffIcon />
+                                                 <HighlightOffIcon />
+                                            
                                         </Fab>
+                                        }
                                     </CardActions>
                                 ) : (
                                     // <ul>
                                     //     {listOfValues.map(item => <li>{item.name}</li>)}
                                     // </ul>
                                     <div>
-                                        <Button onClick={handleClickOpen}>
+                                        <Button variant="contained" color="primary" onClick={handleClickOpen}>
                                             Select New Value
                                         </Button>
                                         <Dialog
@@ -285,11 +288,13 @@ const TopThree = () => {
                                             </DialogContent>
                                             <DialogActions>
                                                 <Button
+                                                 variant="contained"
                                                     onClick={handleClose}
                                                     color='primary'>
                                                     Cancel
                                                 </Button>
                                                 <Button
+                                                 variant="contained"
                                                     onClick={addValueToUser}
                                                     color='primary'>
                                                     Add
