@@ -7,7 +7,13 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
     button: {
         marginTop: theme.spacing(1),
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
+        background: theme.pallette.primary.main,
+        '&:hover':{
+            background: theme.pallette.primary.dark
+        }
+        
+    
     }
 }));
 
@@ -30,14 +36,6 @@ const LandingPage = props => {
                     color='primary'
                     variant='contained'>
                     Sign Up
-                </Button>
-            </Link>
-            <Link to='/signout' style={{ textDecoration: 'none' }}>
-                <Button
-                    className={classes.button}
-                    color='primary'
-                    variant='contained'>
-                    Sign Out
                 </Button>
             </Link>
         </Card>

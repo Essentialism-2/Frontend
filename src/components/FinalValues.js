@@ -20,24 +20,21 @@ const useStyles = makeStyles(theme => ({
         overflow: 'auto'
     },
     button: {
-        margin: theme.spacing(0.5, 0)
+        margin: theme.spacing(0.5, 0),
+        background: theme.pallette.primary.main,
+        '&:hover':{
+            background: theme.pallette.primary.dark
+        }
+
     },
     textField: {
         height: 'auto'
     }
 }));
 
-// function not(a, b) {
-//     return a.filter(value => b.indexOf(value) === -1);
-// }
-
-// function intersection(a, b) {
-//     return a.filter(value => b.indexOf(value) !== -1);
-// }
 
 const FinalValues = () => {
     const classes = useStyles();
-    // const [checked, setChecked] = useState([]);
     const [right, setRight] = useContext(RightContext);
     const [description, setDescription] = useContext(DescriptionContext);
 

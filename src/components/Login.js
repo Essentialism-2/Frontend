@@ -10,7 +10,12 @@ import { withRouter } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
     button: {
         marginTop: theme.spacing(1),
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
+        background: theme.pallette.primary.main,
+        '&:hover':{
+            background: theme.pallette.primary.dark
+        }
+
     }
 }));
 
