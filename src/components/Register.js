@@ -19,6 +19,7 @@ const Register = props => {
 			console.log(res);
 		})
 		.catch(err => {
+			alert("All fields are required");
 			console.log('API Error ', err);
 		})
 
