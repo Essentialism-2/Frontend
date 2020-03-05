@@ -37,6 +37,7 @@ const Login = props => {
                 console.log(res);
             })
             .catch(err => {
+                alert("Incorrect Login");
                 console.log('API Error ', err);
             });
     }
