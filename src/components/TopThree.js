@@ -79,7 +79,7 @@ const TopThree = (props) => {
     };
 
     if (topThreeValues.length < 3) {
-        setTopThreeValues([...topThreeValues, { addValue: true }]);
+        setTopThreeValues([...topThreeValues, { addValue: true , Value_Id: 0}]);
     }
 
     useEffect(() => {

@@ -3,6 +3,9 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 // import '../App.css';
 import { ClipLoader } from 'react-spinners';
 
+import clsx from 'clsx';
+import Badge from '@material-ui/core/Badge';
+
 
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -92,7 +95,15 @@ const useStyles = makeStyles({
       position: 'fixed',
       bottom: 10,
       left: 10
-  }
+  },
+  shape: {
+    backgroundColor: 'blue',
+    width: 70,
+    height: 70,
+  },
+  shapeCircle: {
+    borderRadius: '50%',
+  },
 });
 
 const ProjectsForm = (props) => {
@@ -105,6 +116,9 @@ const ProjectsForm = (props) => {
     const [newValue, setNewValue] = useState({});
     const [loading, setLoading] = useState(false);
     const [topThreeValues, setTopThreeValues] = useState([]);
+
+    const rectangle = <div className={classes.shape} />;
+    const circle = <div className={clsx(classes.shape, classes.shapeCircle)} />;
 
     useEffect(() => {
         setLoading(true);
@@ -212,6 +226,7 @@ const ProjectsForm = (props) => {
             .delete('/projects', {data: deleteThis})
             .then(res => {
                 console.log(res)
+                // props.handleEditing();
                 getAllProjects();
             })
             .catch(err => {
@@ -245,9 +260,10 @@ const ProjectsForm = (props) => {
             <h1 >Projects</h1>
             <div className={classes.container}>
                 {projects.map(project => 
-
                     
+                        // <Badge key={`${project.id} key`} color="secondary" badgeContent={project.values.filter(value => value.values_id === topThreeValues[0].Value_Id || value.values_id === topThreeValues[1].Value_Id  ).length}>
                     <Card key={project.id} className={classes.root} variant="outlined">
+                            
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" gutterBottom>
                         project:
@@ -257,7 +273,7 @@ const ProjectsForm = (props) => {
                         </Typography>
                         <Typography variant="h5" component="h2">
 
-                        how many match: {project.values.filter(value => value.values_id === topThreeValues[0].Value_Id || value.values_id === topThreeValues[1].Value_Id || value.values_id === topThreeValues[2].Value_Id).length}
+                        {/* how many match: {project.values.filter(value =>  value.values_id === topThreeValues[0].Value_Id || value.values_id === topThreeValues[1].Value_Id || value.values_id === topThreeValues[2].Value_Id).length} */}
                         </Typography>
                         <Typography className={classes.pos} color="textSecondary">
                         description:
@@ -298,15 +314,15 @@ const ProjectsForm = (props) => {
                                                             {listOfValues.map(
                                                                 item => (
                                                                     <option key={item.id}
-                                                                        value={
-                                                                            item.id
-                                                                        }>
+                                                                    value={
+                                                                        item.id
+                                                                    }>
                                                                         {
                                                                             item.name
                                                                         }
                                                                     </option>
                                                                 )
-                                                            )}
+                                                                )}
                                                         </Select>
                                                     </FormControl>
                                                 </form>
@@ -321,7 +337,7 @@ const ProjectsForm = (props) => {
                                 Delete Project
                             </Button>
                         :
-                            <Button onClick={() => addValueToProject(project.id)} className={classes.bottomRightRelative} variant="contained" color="primary">
+                        <Button onClick={() => addValueToProject(project.id)} className={classes.bottomRightRelative} variant="contained" color="primary">
                                 Add Value
                             </Button>
                         }
@@ -335,8 +351,9 @@ const ProjectsForm = (props) => {
                                             color={'#123abc'}
                                             loading={loading}
                                             />
-                                            }
+                                        }
                     </Card>
+                                        // </Badge>
                 )}
             </div>
 
