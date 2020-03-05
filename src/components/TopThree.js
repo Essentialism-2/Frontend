@@ -84,7 +84,7 @@ const TopThree = () => {
     if(topThreeValues.length < 3) {
         setTopThreeValues(
            [ ...topThreeValues,
-                {addValue: true}
+                {addValue: true, key: Math.random()}
             ]
 
         )
@@ -187,24 +187,23 @@ const TopThree = () => {
             {!loading ? 
             <div className={classes.container}>
                 {topThreeValues.map(item => 
-                    <Card key={item.Value_Id} className={classes.root}>
+                    <Card key={item.Value_Id || item.key} className={classes.root}>
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" gutterBottom>
                         
                         </Typography>
                         <Typography variant="h5" component="h2">
-                        {item.Value_name}
+                          {item.Value_name}
                         </Typography>
                         <Typography className={classes.pos} color="textSecondary">
                         
                         </Typography>
                         <Typography variant="body2" component="p">
-                        {item.Value_description}
+                          {item.Value_description}
                         </Typography>
                     </CardContent>
                     {!item.addValue ?
                     <CardActions className={classes.valueRemoveContainer}>
-                        
                         <Fab onClick={() => changeTopThree(item.Value_Id)} color="secondary" aria-label="add">
                             <HighlightOffIcon   />
                         </Fab>
@@ -230,7 +229,7 @@ const TopThree = () => {
 
                 <option value="" />
 
-                {listOfValues.map(item =>  <option  value={item.id}>{item.name}</option>)}
+                {listOfValues.map(item =>  <option key={item.id}  value={item.id}>{item.name}</option>)}
 
               </Select>
             </FormControl>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+// import '../App.css';
+
 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -12,6 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -33,13 +36,12 @@ const useStyles = makeStyles({
     minWidth: 275,
     maxWidth: 400,
     margin: 10,
+    position: 'relative',
   },
   container: {
     display: 'flex',
     justifyContent: 'space-around',
     flexFlow: 'row wrap',
-
-
   },
   title: {
     width: '100%',
@@ -56,7 +58,7 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   addProject: {
-      position: 'absolute',
+      position: 'fixed',
       bottom: 20,
       right: 20
   },
@@ -71,6 +73,16 @@ const useStyles = makeStyles({
   projectForm: {
       display: 'flex',
       justifyContent: 'space-around',
+  },
+  bottomRightRelative: {
+      position: 'absolute',
+      bottom: 5,
+      right: 5,
+  },
+  bottomLeftFixed: {
+      position: 'fixed',
+      bottom: 10,
+      left: 10
   }
 });
 
@@ -80,6 +92,11 @@ const ProjectsForm = () => {
     const [newProject, setNewProject] = useState({})
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
+    const [editing, setEditing] = useState(false);
+
+    const handleEditing = () => {
+        setEditing(!editing)
+    }
 
     const handleOpen = () => {
         setOpen(true);
@@ -134,12 +151,26 @@ const ProjectsForm = () => {
         })
       }
 
+      const deleteProject = (project) => {
+        let deleteThis = {project_id: project};
+        axiosWithAuth()
+            .delete('/projects', {data: deleteThis})
+            .then(res => {
+                console.log(res)
+                getAllProjects();
+            })
+            .catch(err => {
+                console.log(err)
+            })
+      }
+
     return (
         <div>
             <h1 >Projects</h1>
             <div className={classes.container}>
                 {projects.map(project => 
                     <Card key={project.id} className={classes.root} variant="outlined">
+                        
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" gutterBottom>
                         project:
@@ -154,8 +185,15 @@ const ProjectsForm = () => {
                         {project.description}
                         </Typography>
                     </CardContent>
+                    <ul>
+                        {project.values.map(value => <li key={`${project.id} ${value.values_id}`}>{value.values_id}</li>)}
+                    </ul>
                     <CardActions>
-                        <Button size="small">Learn More</Button>
+                        {editing && 
+                            <Button onClick={() => deleteProject(project.id)} className={classes.bottomRightRelative} variant="contained" color="secondary">
+                                Delete Project
+                            </Button>
+                        }
                     </CardActions>
                     </Card>
                 )}
@@ -166,6 +204,7 @@ const ProjectsForm = () => {
                 <AddIcon  />
             </Fab>
             <div>
+            </div>
             <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
@@ -184,7 +223,12 @@ const ProjectsForm = () => {
                 </form>
                 </div>
             </Modal>
-            </div>
+
+            {/* <Button className={classes.bottomLeftFixed}>#</Button> */}
+            <Fab onClick={handleEditing} className={classes.bottomLeftFixed}  color="primary" aria-label="add">
+                <SettingsIcon />
+            </Fab>
+
 
         </div>
     )
