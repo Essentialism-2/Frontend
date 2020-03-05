@@ -6,10 +6,21 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Fab from '@material-ui/core/Fab';
+
+// select modal
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 
 const useStyles = makeStyles({
@@ -38,6 +49,10 @@ const useStyles = makeStyles({
       display: 'flex',
       justifyContent: 'flex-end'
   },
+  formControl: {
+    // margin: theme.spacing(1),
+    minWidth: 120,
+  },
 });
 
 const TopThree = () => {
@@ -46,6 +61,21 @@ const TopThree = () => {
     const [ topThreeValues, setTopThreeValues ] = useState([]);
     const [ loading, setLoading ] = useState(false)
     const [ listOfValues, setListOfValues ] = useState([])
+    const [open, setOpen] = React.useState(false);
+    const [newValue, setNewValue] = useState({});
+
+    const handleChange = event => {
+        setNewValue({value_id: event.target.value, top_three: true});
+        console.log('new value set', newValue)
+      };
+    
+      const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
 
     if(topThreeValues.length < 3) {
         setTopThreeValues(
@@ -116,6 +146,31 @@ const TopThree = () => {
         })
     }
 
+    const addValueToUser = () => {
+
+        axiosWithAuth()
+        .post('https://buildweek-essentialism.herokuapp.com/api/values/user/1', newValue)
+        .then(res => {
+            console.log(res)
+            setOpen(false);
+            axiosWithAuth()
+
+            .get(`https://buildweek-essentialism.herokuapp.com/api/values/user/2`)
+            .then(res => {
+                console.log(res.data.filter(item => item.Top_Three === true))
+                setTopThreeValues(res.data.filter(item => item.Top_Three === true))
+                setLoading(false)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
+            
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
 
 
 
@@ -148,9 +203,40 @@ const TopThree = () => {
                         </Fab>
                     </CardActions>
                     :
-                    <ul>
-                        {listOfValues.map(item => <li>{item.name}</li>)}
-                    </ul>
+                    // <ul>
+                    //     {listOfValues.map(item => <li>{item.name}</li>)}
+                    // </ul>
+                    <div>
+      <Button onClick={handleClickOpen}>Select New Value</Button>
+      <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>
+        <DialogTitle>Choose Value</DialogTitle>
+        <DialogContent>
+          <form className={classes.container}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="demo-dialog-native">New Value</InputLabel>
+              <Select
+                native
+                value={newValue.value_id}
+                onChange={handleChange}
+                input={<Input id="demo-dialog-native" />}
+              >
+
+                <option value="" />
+                {listOfValues.map(item => <option value={item.id}>{item.name}</option>)}
+              </Select>
+            </FormControl>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={addValueToUser} color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
                     }
                     </Card>
 
