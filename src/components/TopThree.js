@@ -91,7 +91,7 @@ const TopThree = () => {
 
     useEffect(() => {
         axiosWithAuth()
-        .get('https://buildweek-essentialism.herokuapp.com/api/values/')
+        .get('/values/')
         .then(res => {
             console.log('all values', res)
             setListOfValues(res.data)
@@ -105,7 +105,7 @@ const TopThree = () => {
     useEffect(() => {
         setLoading(true)
         axiosWithAuth()
-        .get(`https://buildweek-essentialism.herokuapp.com/api/values/user/2`)
+        .get(`/values/user/2`)
         .then(res => {
             console.log('your top three values', res.data.filter(item => item.Top_Three === true))
             setTopThreeValues(res.data.filter(item => item.Top_Three === true))
@@ -127,12 +127,12 @@ const TopThree = () => {
         }
         setLoading(true)
         axiosWithAuth()
-        .delete(`https://buildweek-essentialism.herokuapp.com/api/values/delete/${valueId}`)
+        .delete(`/values/delete/${valueId}`)
         .then(res => {
             console.log(res)
             axiosWithAuth()
 
-            .get(`https://buildweek-essentialism.herokuapp.com/api/values/user/2`)
+            .get(`/values/user/2`)
             .then(res => {
                 console.log(res.data.filter(item => item.Top_Three === true))
                 setTopThreeValues(res.data.filter(item => item.Top_Three === true))
@@ -153,13 +153,13 @@ const TopThree = () => {
         setLoading(true)
 
         axiosWithAuth()
-        .post('https://buildweek-essentialism.herokuapp.com/api/values/user/1', newValue)
+        .post('/values/user/1', newValue)
         .then(res => {
             console.log(res)
             setOpen(false);
             axiosWithAuth()
 
-            .get(`https://buildweek-essentialism.herokuapp.com/api/values/user/2`)
+            .get(`/values/user/2`)
             .then(res => {
                 console.log(res.data.filter(item => item.Top_Three === true))
                 setTopThreeValues(res.data.filter(item => item.Top_Three === true))
@@ -228,7 +228,9 @@ const TopThree = () => {
               >
 
                 <option value="" />
-                {listOfValues.map(item => <option value={item.id}>{item.name}</option>)}
+
+                {listOfValues.map(item =>  <option  value={item.id}>{item.name}</option>)}
+
               </Select>
             </FormControl>
           </form>
