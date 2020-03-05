@@ -30,6 +30,7 @@ import TopThree from './TopThree';
 const useStyles = makeStyles(theme => ({
     grow: {
         flexGrow: 1,
+        
       },
       menuButton: {
         marginRight: theme.spacing(2),
@@ -98,7 +99,15 @@ const useStyles = makeStyles(theme => ({
     addProject: {
         position: 'absolute',
         bottom: 20,
-        right: 20
+        right: 20,
+        background: theme.pallette.primary.main,
+        '&:hover':{
+            background: theme.pallette.primary.dark
+        }
+
+    },
+    appBar: {
+      backgroundColor: theme.pallette.primary.main
     }
   }));
 
@@ -186,7 +195,7 @@ const Dashboard = () => {
 
     return (
         <div className={classes.grow}>
-        <AppBar position="static">
+        <AppBar position="static" className={classes.appBar}>
           <Toolbar>
             <IconButton
               edge="start"
