@@ -104,6 +104,31 @@ const ProjectsForm = (props) => {
     const [listOfValues, setListOfValues] = useState([]);
     const [newValue, setNewValue] = useState({});
     const [loading, setLoading] = useState(false);
+    const [topThreeValues, setTopThreeValues] = useState([]);
+
+    useEffect(() => {
+        setLoading(true);
+        axiosWithAuth()
+            .get(
+                `/values/user/1`
+            )
+            .then(res => {
+                console.log(
+                    'your top three values',
+                    res.data.filter(item => item.Top_Three === true)
+                );
+                setTopThreeValues(
+                    res.data.filter(item => item.Top_Three === true)
+                );
+                console.log('all your values', res.data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err);
+                setLoading(false);
+            });
+    }, []);
+
 
 
     const handleChangeProjectValue = event => {
@@ -214,7 +239,6 @@ const ProjectsForm = (props) => {
             });
     };
 
-    
 
     return (
         <div>
@@ -224,7 +248,6 @@ const ProjectsForm = (props) => {
 
                     
                     <Card key={project.id} className={classes.root} variant="outlined">
-                        
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" gutterBottom>
                         project:
@@ -232,13 +255,16 @@ const ProjectsForm = (props) => {
                         <Typography variant="h5" component="h2">
                         {project.name}
                         </Typography>
+                        <Typography variant="h5" component="h2">
+
+                        how many match: {project.values.filter(value => value.values_id === topThreeValues[0].Value_Id || value.values_id === topThreeValues[1].Value_Id || value.values_id === topThreeValues[2].Value_Id).length}
+                        </Typography>
                         <Typography className={classes.pos} color="textSecondary">
                         description:
                         </Typography>
                         <Typography variant="body2" component="p">
                         {project.description}
                         </Typography>
-
                     </CardContent>
                     {!loading ?
                     <>

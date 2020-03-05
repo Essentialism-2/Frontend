@@ -86,7 +86,7 @@ const TopThree = (props) => {
         axiosWithAuth()
             .get('/values/')
             .then(res => {
-                console.log('all values', res);
+                // console.log('all values', res);
                 setListOfValues(res.data);
             })
             .catch(err => {
@@ -102,14 +102,14 @@ const TopThree = (props) => {
                 `/values/user/${userId}`
             )
             .then(res => {
-                console.log(
-                    'your top three values',
-                    res.data.filter(item => item.Top_Three === true)
-                );
+                // console.log(
+                    // 'your top three values',
+                    // res.data.filter(item => item.Top_Three === true)
+                // );
                 setTopThreeValues(
                     res.data.filter(item => item.Top_Three === true)
                 );
-                console.log('all your values', res.data);
+                // console.log('all your values', res.data);
                 setLoading(false);
             })
             .catch(err => {
@@ -119,7 +119,7 @@ const TopThree = (props) => {
     }, []);
 
     const changeTopThree = (valueId, userId) => {
-        console.log(valueId);
+        // console.log(valueId);
         let send = {
             value_id: valueId,
             top_three: false
@@ -130,15 +130,15 @@ const TopThree = (props) => {
                 `/values/delete/${valueId}`
             )
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 axiosWithAuth()
                     .get(
                         `/values/user/${userId}`
                     )
                     .then(res => {
-                        console.log(
-                            res.data.filter(item => item.Top_Three === true)
-                        );
+                        // console.log(
+                        //     res.data.filter(item => item.Top_Three === true)
+                        // );
                         setTopThreeValues(
                             res.data.filter(item => item.Top_Three === true)
                         );
@@ -164,7 +164,7 @@ const TopThree = (props) => {
                 newValue
             )
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 setOpen(false);
                 axiosWithAuth()
                     .get(
@@ -205,6 +205,10 @@ const TopThree = (props) => {
                                         gutterBottom></Typography>
                                     <Typography variant='h5' component='h2'>
                                         {item.Value_name}
+
+                                    </Typography>
+                                    <Typography variant='h5' component='h2'>
+                                        id:{item.Value_Id}
                                     </Typography>
                                     <Typography
                                         className={classes.pos}
