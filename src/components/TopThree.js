@@ -67,6 +67,7 @@ const TopThree = () => {
     const [open, setOpen] = React.useState(false);
     const [newValue, setNewValue] = useState({});
 
+
     const handleChange = event => {
         setNewValue({value_id: event.target.value, top_three: true});
         console.log('new value set', newValue)
@@ -263,6 +264,7 @@ const TopThree = () => {
           loading={loading}
         />
 }
+
         </div>
 
     )

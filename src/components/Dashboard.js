@@ -1,4 +1,5 @@
 import React from 'react';
+import ProjectsForm from './ProjectsForm';
 
 //floating action button
 import { makeStyles } from '@material-ui/core/styles';
@@ -249,6 +250,7 @@ const Dashboard = () => {
           </Toolbar>
         </AppBar>
         <TopThree />
+        <ProjectsForm />
         {renderMobileMenu}
         {renderMenu}
         <div className={classes.root}>
