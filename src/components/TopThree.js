@@ -84,7 +84,7 @@ const TopThree = () => {
 
     useEffect(() => {
         axiosWithAuth()
-            .get('/values')
+            .get('/values/')
             .then(res => {
                 console.log('all values', res);
                 setListOfValues(res.data);
@@ -210,7 +210,7 @@ const TopThree = () => {
                                         className={classes.pos}
                                         color='textSecondary'></Typography>
                                     <Typography variant='body2' component='p'>
-                                        {item.User_Description}
+                                        {item.Value_description}
                                     </Typography>
                                 </CardContent>
                                 {!item.addValue ? (

@@ -1,24 +1,18 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-//Styling
 import { makeStyles } from '@material-ui/core/styles';
-import {
-    Stepper,
-    Step,
-    StepLabel,
-    StepContent,
-    Button,
-    Paper,
-    Typography
-} from '@material-ui/core';
-//Auth
-import { axiosWithAuth } from '../utils/axiosWithAuth';
-//Context
-import { DescriptionContext, RightContext } from '../utils/store';
-//Components
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import ValuesList from './ValuesList';
 import CuratedValues from './CuratedValues';
 import FinalValues from './FinalValues';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { DescriptionContext, RightContext } from '../utils/store';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -28,10 +22,9 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(1),
         marginRight: theme.spacing(1),
         background: theme.pallette.primary.main,
-        '&:hover': {
+        '&:hover':{
             background: theme.pallette.primary.dark
-        },
-        color: 'white'
+        }
     },
     actionsContainer: {
         marginBottom: theme.spacing(2)
@@ -42,11 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-    return [
-        'Select Values - What is important to you?',
-        'Refine values - Pick your top 3',
-        'Think about your values - Describe why these are important to you'
-    ];
+    return ['Select Values - What is important to you?', 'Refine values - Pick your top 3', 'Think about your values - Describe why these are important to you'];
 }
 
 function getStepContent(step) {
@@ -67,7 +56,7 @@ const ValuesForm = () => {
     const [right] = useContext(RightContext);
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
-    const [description] = useContext(DescriptionContext);
+    const [description] = useContext(DescriptionContext)
     const steps = getSteps();
     const userId = localStorage.getItem('id');
 
@@ -106,7 +95,7 @@ const ValuesForm = () => {
             axiosWithAuth()
                 .put(`/values/user/${userId}`, {
                     value_id: item.Value_Id,
-                    description: description.Value_description
+                    description: description.description
                 })
                 .then(res => console.log('Description PUT response', res))
                 .catch(err => console.log('Description PUT error', err));
@@ -119,7 +108,7 @@ const ValuesForm = () => {
         } else if (activeStep === 1) {
             setTopThree(right);
         } else {
-            sendDescription(right);
+            sendDescription(right)
         }
         setActiveStep(prevActiveStep => prevActiveStep + 1);
     };
@@ -152,6 +141,7 @@ const ValuesForm = () => {
                                     </Button>
                                     <Button
                                         variant='contained'
+                                        color='primary'
                                         onClick={handleNext}
                                         className={classes.button}>
                                         {activeStep === steps.length - 1
@@ -170,7 +160,10 @@ const ValuesForm = () => {
                         All steps completed - you&apos;re finished
                     </Typography>
                     <Link to='/dashboard' style={{ textDecoration: 'none' }}>
-                        <Button className={classes.button} variant='contained'>
+                        <Button
+                            className={classes.button}
+                            color='primary'
+                            variant='contained'>
                             Dashboard
                         </Button>
                     </Link>
