@@ -16,7 +16,7 @@ const SignOut = props => {
 
     const logout = () => {
         localStorage.clear('token');
-        props.history.push('/login');
+        props.history.push('/')
     };
 
     return (
