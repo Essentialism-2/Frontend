@@ -278,8 +278,10 @@ const Dashboard = () => {
             </div>
           </Toolbar>
         </AppBar>
-        <TopThree handleEditing={handleEditing} editing={editing} />
-        <ProjectsForm handleEditing={handleEditing} editing={editing} />
+
+        <TopThree   editing={editing} />
+        <ProjectsForm  handleEditing={handleEditing} editing={editing} />
+
         {renderMobileMenu}
         {renderMenu}
             

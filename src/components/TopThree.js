@@ -207,9 +207,6 @@ const TopThree = (props) => {
                                         {item.Value_name}
 
                                     </Typography>
-                                    <Typography variant='h5' component='h2'>
-                                        id:{item.Value_Id}
-                                    </Typography>
                                     <Typography
                                         className={classes.pos}
                                         color='textSecondary'></Typography>
