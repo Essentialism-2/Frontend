@@ -17,6 +17,9 @@ import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -105,7 +108,8 @@ const useStyles = makeStyles({
     borderRadius: '50%',
   },
   matchesTopThree: {
-      color: 'green'
+      color: 'green',
+      fontWeight: 800
   }
 });
 
@@ -189,7 +193,7 @@ const ProjectsForm = (props) => {
         axiosWithAuth()
         .get('/projects')
         .then(res => {
-            console.log('all projects', res)
+            // console.log('all projects', res)
             setProjects(res.data)
         })
         .catch(err => {
@@ -258,6 +262,27 @@ const ProjectsForm = (props) => {
     };
 
 
+    const removeValueFromProject = (project, value) => {
+        alert(`project: ${project}, value: ${value}`);
+        axiosWithAuth()
+        .delete('/projects/value', {data: {project_id: project, values_id: value}})
+        .then(res => {
+            // console.log(res)
+            getAllProjects()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    const trashIconButton = (project, value) => {
+        return (
+        <IconButton onClick={() => removeValueFromProject(project, value)} aria-label="delete" className={classes.margin}>
+        <DeleteIcon fontSize="small" />
+        </IconButton>
+        )
+    }
+
     return (
         <div>
             <h1 >Projects</h1>
@@ -289,7 +314,12 @@ const ProjectsForm = (props) => {
                     <>
                         <Typography variant="body2" component="p">
                             <h4>Values for project:</h4>
-                            {project.projectValues.map(value => value.matchesTopThree ? <div className={classes.matchesTopThree}  key={`${project.id} ${value.values_id}`}> {value.name}</div>: <div key={`${project.id} ${value.values_id}`}> {value.name}</div>)}
+                            {props.editing ? 
+                            project.projectValues.map(value => value.matchesTopThree ? <div className={classes.matchesTopThree}  key={`${project.id} ${value.values_id}`}> {value.name} {trashIconButton(project.id, value.id)}</div>: <div key={`${project.id} ${value.values_id}`}> {value.name} {trashIconButton(project.id, value.id)}</div>)
+                            :
+                            project.projectValues.map(value => value.matchesTopThree ? <div className={classes.matchesTopThree}  key={`${project.id} ${value.values_id}`}> {value.name}</div>: <div key={`${project.id} ${value.values_id}`}> {value.name}</div>)
+                            }
+                        
                         </Typography>
                         <Typography variant="body2" component="p">
                         <form
