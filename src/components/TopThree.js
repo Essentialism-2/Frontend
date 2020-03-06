@@ -197,7 +197,7 @@ const TopThree = (props) => {
                 <div className={classes.container}>
                     {topThreeValues.map(
                         item => (
-                            <Card key={Date.now()} className={classes.root}>
+                            <Card key={item.Value_Id} className={classes.root}>
                                 <CardContent>
                                     <Typography
                                         className={classes.title}
