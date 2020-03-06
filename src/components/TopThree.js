@@ -199,7 +199,7 @@ const TopThree = () => {
                         
                         </Typography>
                         <Typography variant="body2" component="p">
-                          {item.Value_description}
+                          {item.User_Description}
                         </Typography>
                     </CardContent>
                     {!item.addValue ?
