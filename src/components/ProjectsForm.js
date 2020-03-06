@@ -1,4 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+//Styling
+import {
+    Card,
+    CardActions,
+    CardContent,
+    Button,
+    Typography,
+    Fab,
+    Modal,
+    TextField
+} from '@material-ui/core';
+import { AddIcon } from '@material-ui/icons/Add';
+import { SettingsIcon } from '@material-ui/icons/Settings';
+import { makeStyles } from '@material-ui/core/styles';
+//Auth
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 // import '../App.css';
 
@@ -234,4 +249,4 @@ const ProjectsForm = () => {
     )
 }
 
-export default ProjectsForm
+export default ProjectsForm;
