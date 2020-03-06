@@ -10,8 +10,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                     <Component {...props} />
                 ) : (
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <Redirect to='/dashboard' />
 
+=======
+                    <Redirect to='/ChangeThis' />
+>>>>>>> parent of bddbf97... Merge branch 'clean-up' of https://github.com/Essentialism-2/Frontend into clean-up
 =======
                     <Redirect to='/ChangeThis' />
 >>>>>>> parent of bddbf97... Merge branch 'clean-up' of https://github.com/Essentialism-2/Frontend into clean-up
