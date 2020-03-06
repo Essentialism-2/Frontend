@@ -4,7 +4,7 @@ export const axiosWithAuth = () => {
     const token = localStorage.getItem('token');
 
     return axios.create({
-        baseURL: 'https://git.heroku.com/essentialism-test.git/api',
+        baseURL: 'https://essentialism-test.herokuapp.com/api',
         headers: {
             Authorization: token
         }
