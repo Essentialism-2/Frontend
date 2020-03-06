@@ -20,15 +20,15 @@ const SignOut = props => {
     };
 
     return (
-        // <Card>
+        <Card>
             <Button
-                onClick={() => logout()}
-                // className={classes.button}
+                onClick={logout()}
+                className={classes.button}
                 color='primary'
                 variant='contained'>
                 Sign Out
             </Button>
-        // </Card>
+        </Card>
     );
 };
 
