@@ -1,11 +1,15 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch
+} from 'react-router-dom';
+//Components
 import ValuesForm from './components/ValuesForm';
 import './App.css';
 import Login from './components/Login';
 import Register from './components/Register';
-import SignOut from './components/SignOut';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './utils/PrivateRoute';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
