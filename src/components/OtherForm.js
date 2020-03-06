@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     button: {
-        margin: '10px auto',
+        margin: theme.spacing(0.5, 0),
         background: theme.pallette.primary.main,
         '&:hover': {
             background: theme.pallette.primary.dark
