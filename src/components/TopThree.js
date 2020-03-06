@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 import { ClipLoader } from 'react-spinners';
@@ -84,7 +85,7 @@ const TopThree = () => {
 
     useEffect(() => {
         axiosWithAuth()
-            .get('/values/')
+            .get('/values')
             .then(res => {
                 console.log('all values', res);
                 setListOfValues(res.data);
@@ -210,7 +211,7 @@ const TopThree = () => {
                                         className={classes.pos}
                                         color='textSecondary'></Typography>
                                     <Typography variant='body2' component='p'>
-                                        {item.Value_description}
+                                        {item.User_Description}
                                     </Typography>
                                 </CardContent>
                                 {!item.addValue ? (
@@ -318,4 +319,4 @@ const TopThree = () => {
     );
 };
 
-export default TopThree;
+export default withRouter(TopThree);

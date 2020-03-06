@@ -1,13 +1,14 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import LandingPage from './components/LandingPage';
+import { Route, Switch, withRouter } from 'react-router-dom';
+//Components
 import ValuesForm from './components/ValuesForm';
-import './App.css';
 import Login from './components/Login';
 import Register from './components/Register';
 import SignOut from './components/SignOut';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './utils/PrivateRoute';
+//Styling
+import './App.css';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
@@ -24,11 +25,14 @@ const App = () => {
         <div className='App'>
             <ThemeProvider theme={theme}>
                 <Switch>
-                    <Route exact path='/' component={LandingPage} />
-                    <Route path='/login' component={Login} />
+                    <PrivateRoute
+                        exact
+                        path='/dashboard'
+                        component={Dashboard}
+                    />
+                    <Route exact path='/' component={Login} />
                     <Route path='/register' component={Register} />
-                    <PrivateRoute path='/dashboard' component={Dashboard} />
-                    <Route path='/values-form' component={ValuesForm} />>
+                    <Route path='/values-form' component={ValuesForm} />
                     <Route path='/signout' component={SignOut} />
                 </Switch>
             </ThemeProvider>
@@ -36,4 +40,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default withRouter(App);

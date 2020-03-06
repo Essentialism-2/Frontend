@@ -1,14 +1,13 @@
 import React, { useEffect, useContext } from 'react';
-import Value from './Value';
+//Styling
+import { Grid, List, ListItem, ListItemText, TextField, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
+//Auth
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+//Context
 import { RightContext, DescriptionContext } from '../utils/store';
+//Components
+import Value from './Value';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -28,7 +27,8 @@ const useStyles = makeStyles(theme => ({
 
     },
     textField: {
-        height: 'auto'
+        width: 370,
+        background: '#CCE6FF'
     }
 }));
 
@@ -80,9 +80,11 @@ const FinalValues = () => {
                                                 value.Value_description
                                             }
                                             className={classes.textField}
-                                            // label='Why is this important to you?'
                                             onChange={handleChange}
+                                            required id='standard-required'
                                             id='filled-basic'
+                                            error id='standard-error-helper-text'
+                                            helperText='Required'
                                             variant='filled'
                                             multiline
                                         />

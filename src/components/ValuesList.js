@@ -1,16 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Value from './Value';
+//Styling
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+import {
+    Grid,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Checkbox,
+    Button,
+    Paper
+} from '@material-ui/core';
+//Auth
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+//Context
 import { RightContext } from '../utils/store';
+//Components
+import Value from './Value';
 import OtherForm from './OtherForm';
 
 const useStyles = makeStyles(theme => ({
@@ -72,16 +78,10 @@ const ValuesList = () => {
         setChecked(newChecked);
     };
 
-    // const handleAllRight = () => {
-    //     setRight(right.concat(left));
-    //     setLeft([]);
-    // };
-
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
-        // assignValues(checked);
     };
 
     const handleCheckedLeft = () => {
@@ -166,15 +166,3 @@ const ValuesList = () => {
 };
 
 export default ValuesList;
-
-// const values = [
-//     {
-//         title: 'Nothing'
-//     },
-//     {
-//         title: 'More nothing'
-//     },
-//     {
-//         title: 'Even more nothing'
-//     }
-// ];
