@@ -20,7 +20,11 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         marginTop: theme.spacing(1),
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
+        background: theme.pallette.primary.main,
+        '&:hover':{
+            background: theme.pallette.primary.dark
+        }
     },
     actionsContainer: {
         marginBottom: theme.spacing(2)
@@ -31,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-    return ['Select Values', 'Refine values', 'Think about your values'];
+    return ['Select Values - What is important to you?', 'Refine values - Pick your top 3', 'Think about your values - Describe why these are important to you'];
 }
 
 function getStepContent(step) {
@@ -52,11 +56,11 @@ const ValuesForm = () => {
     const [right] = useContext(RightContext);
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
-    const [description, setDescription] = useContext(DescriptionContext)
+    const [description] = useContext(DescriptionContext)
     const steps = getSteps();
+    const userId = localStorage.getItem('id');
 
     const assignValues = () => {
-        const userId = localStorage.getItem('id');
         right.map(item => {
             axiosWithAuth()
                 .post(`/values/user/${userId}`, {
@@ -72,7 +76,6 @@ const ValuesForm = () => {
     };
 
     const setTopThree = () => {
-        const userId = localStorage.getItem('id');
         right.map(item => {
             console.log('Item', item);
             axiosWithAuth()
@@ -88,7 +91,6 @@ const ValuesForm = () => {
     };
 
     const sendDescription = () => {
-        const userId = localStorage.getItem('id');
         right.map(item => {
             axiosWithAuth()
                 .put(`/values/user/${userId}`, {
