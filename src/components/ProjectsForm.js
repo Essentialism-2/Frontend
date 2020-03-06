@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
 //Styling
 import {
     Card,
@@ -278,4 +277,4 @@ const ProjectsForm = () => {
     );
 };
 
-export default withRouter(ProjectsForm);
+export default ProjectsForm;

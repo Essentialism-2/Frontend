@@ -1,10 +1,13 @@
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch
+} from 'react-router-dom';
 //Components
 import ValuesForm from './components/ValuesForm';
 import Login from './components/Login';
 import Register from './components/Register';
-import SignOut from './components/SignOut';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './utils/PrivateRoute';
 //Styling
@@ -24,20 +27,17 @@ const App = () => {
     return (
         <div className='App'>
             <ThemeProvider theme={theme}>
-                <Switch>
-                    <PrivateRoute
-                        exact
-                        path='/dashboard'
-                        component={Dashboard}
-                    />
-                    <Route exact path='/' component={Login} />
-                    <Route path='/register' component={Register} />
-                    <Route path='/values-form' component={ValuesForm} />
-                    <Route path='/signout' component={SignOut} />
-                </Switch>
+                <Router>
+                    <Switch>
+                        <Route exact path='/' component={Login} />
+                        <Route path='/register' component={Register} />
+                        <Route path='/values-form' component={ValuesForm} />
+                        <PrivateRoute path='/dashboard' ><Dashboard/></PrivateRoute>
+                    </Switch>
+                </Router>
             </ThemeProvider>
         </div>
     );
 };
 
-export default withRouter(App);
+export default App;

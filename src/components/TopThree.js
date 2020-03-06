@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 import { ClipLoader } from 'react-spinners';
@@ -198,7 +197,7 @@ const TopThree = () => {
                 <div className={classes.container}>
                     {topThreeValues.map(
                         item => (
-                            <Card key={item.Value_Id} className={classes.root}>
+                            <Card key={Date.now()} className={classes.root}>
                                 <CardContent>
                                     <Typography
                                         className={classes.title}
@@ -319,4 +318,4 @@ const TopThree = () => {
     );
 };
 
-export default withRouter(TopThree);
+export default TopThree;
