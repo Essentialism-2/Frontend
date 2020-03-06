@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { Card } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+//Styling
+import { Button, Card } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -16,7 +16,7 @@ const SignOut = props => {
 
     const logout = () => {
         localStorage.clear('token');
-        props.history.push('/')
+        props.history.push('/login');
     };
 
     return (

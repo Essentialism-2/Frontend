@@ -84,7 +84,7 @@ const TopThree = () => {
 
     useEffect(() => {
         axiosWithAuth()
-            .get('/values/')
+            .get('/values')
             .then(res => {
                 console.log('all values', res);
                 setListOfValues(res.data);
@@ -197,7 +197,7 @@ const TopThree = () => {
                 <div className={classes.container}>
                     {topThreeValues.map(
                         item => (
-                            <Card key={item.Value_Id} className={classes.root}>
+                            <Card key={Date.now()} className={classes.root}>
                                 <CardContent>
                                     <Typography
                                         className={classes.title}
@@ -210,7 +210,7 @@ const TopThree = () => {
                                         className={classes.pos}
                                         color='textSecondary'></Typography>
                                     <Typography variant='body2' component='p'>
-                                        {item.Value_description}
+                                        {item.User_Description}
                                     </Typography>
                                 </CardContent>
                                 {!item.addValue ? (
