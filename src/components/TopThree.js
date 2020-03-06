@@ -214,7 +214,7 @@ const TopThree = (props) => {
                                         className={classes.pos}
                                         color='textSecondary'></Typography>
                                     <Typography variant='body2' component='p'>
-                                        {item.Value_description}
+                                        {item.User_Description}
                                     </Typography>
                                 </CardContent>
                                 {!item.addValue ? (
