@@ -56,7 +56,7 @@ const useStyles = makeStyles({
     }
 });
 
-const TopThree = () => {
+const TopThree = (props) => {
     const classes = useStyles();
     const userID = localStorage.getItem('id');
     const [topThreeValues, setTopThreeValues] = useState([]);
@@ -79,14 +79,14 @@ const TopThree = () => {
     };
 
     if (topThreeValues.length < 3) {
-        setTopThreeValues([...topThreeValues, { addValue: true }]);
+        setTopThreeValues([...topThreeValues, { addValue: true , Value_Id: 0}]);
     }
 
     useEffect(() => {
         axiosWithAuth()
             .get('/values/')
             .then(res => {
-                console.log('all values', res);
+                // console.log('all values', res);
                 setListOfValues(res.data);
             })
             .catch(err => {
@@ -102,14 +102,14 @@ const TopThree = () => {
                 `/values/user/${userId}`
             )
             .then(res => {
-                console.log(
-                    'your top three values',
-                    res.data.filter(item => item.Top_Three === true)
-                );
+                // console.log(
+                    // 'your top three values',
+                    // res.data.filter(item => item.Top_Three === true)
+                // );
                 setTopThreeValues(
                     res.data.filter(item => item.Top_Three === true)
                 );
-                console.log('all your values', res.data);
+                // console.log('all your values', res.data);
                 setLoading(false);
             })
             .catch(err => {
@@ -119,7 +119,7 @@ const TopThree = () => {
     }, []);
 
     const changeTopThree = (valueId, userId) => {
-        console.log(valueId);
+        // console.log(valueId);
         let send = {
             value_id: valueId,
             top_three: false
@@ -130,15 +130,15 @@ const TopThree = () => {
                 `/values/delete/${valueId}`
             )
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 axiosWithAuth()
                     .get(
                         `/values/user/${userId}`
                     )
                     .then(res => {
-                        console.log(
-                            res.data.filter(item => item.Top_Three === true)
-                        );
+                        // console.log(
+                        //     res.data.filter(item => item.Top_Three === true)
+                        // );
                         setTopThreeValues(
                             res.data.filter(item => item.Top_Three === true)
                         );
@@ -164,7 +164,7 @@ const TopThree = () => {
                 newValue
             )
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 setOpen(false);
                 axiosWithAuth()
                     .get(
@@ -205,6 +205,10 @@ const TopThree = () => {
                                         gutterBottom></Typography>
                                     <Typography variant='h5' component='h2'>
                                         {item.Value_name}
+
+                                    </Typography>
+                                    <Typography variant='h5' component='h2'>
+                                        id:{item.Value_Id}
                                     </Typography>
                                     <Typography
                                         className={classes.pos}
@@ -218,21 +222,24 @@ const TopThree = () => {
                                         className={
                                             classes.valueRemoveContainer
                                         }>
+                                            {props.editing &&
                                         <Fab
                                             onClick={() =>
                                                 changeTopThree(item.Value_Id)
                                             }
                                             color='secondary'
                                             aria-label='add'>
-                                            <HighlightOffIcon />
+                                                 <HighlightOffIcon />
+                                            
                                         </Fab>
+                                        }
                                     </CardActions>
                                 ) : (
                                     // <ul>
                                     //     {listOfValues.map(item => <li>{item.name}</li>)}
                                     // </ul>
                                     <div>
-                                        <Button onClick={handleClickOpen}>
+                                        <Button variant="contained" color="primary" onClick={handleClickOpen}>
                                             Select New Value
                                         </Button>
                                         <Dialog
@@ -269,7 +276,7 @@ const TopThree = () => {
                                                             <option value='' />
                                                             {listOfValues.map(
                                                                 item => (
-                                                                    <option
+                                                                    <option key={item.id}
                                                                         value={
                                                                             item.id
                                                                         }>
@@ -285,11 +292,13 @@ const TopThree = () => {
                                             </DialogContent>
                                             <DialogActions>
                                                 <Button
+                                                 variant="contained"
                                                     onClick={handleClose}
                                                     color='primary'>
                                                     Cancel
                                                 </Button>
                                                 <Button
+                                                 variant="contained"
                                                     onClick={addValueToUser}
                                                     color='primary'>
                                                     Add

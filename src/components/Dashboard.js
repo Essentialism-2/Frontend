@@ -1,6 +1,11 @@
-import React from 'react';
-import ProjectsForm from './ProjectsForm';
+import React, { useState} from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+
+//Components
+import ProjectsForm from './ProjectsForm';
+import TopThree from './TopThree';
+import SignOut from './SignOut';
+
 
 //floating action button
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,6 +16,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import NavigationIcon from '@material-ui/icons/Navigation';
 
 //dashboard
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import { fade } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -27,7 +33,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import TopThree from './TopThree';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -99,7 +104,14 @@ const useStyles = makeStyles(theme => ({
 
     },
     appBar: {
-        backgroundColor: theme.pallette.primary.main
+
+      backgroundColor: theme.pallette.primary.main
+    },
+    bottomLeftFixed: {
+        position: 'fixed',
+        bottom: 10,
+        left: 10
+
     }
 }));
 
@@ -107,6 +119,7 @@ const Dashboard = () => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [editing, setEditing] = useState(false);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -119,6 +132,10 @@ const Dashboard = () => {
         setMobileMoreAnchorEl(null);
     };
 
+    const handleEditing = () => {
+      setEditing(!editing)
+  }
+
     const handleMenuClose = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
@@ -130,17 +147,20 @@ const Dashboard = () => {
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}>
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        </Menu>
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <SignOut />
+      </Menu>
+
     );
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -186,62 +206,80 @@ const Dashboard = () => {
 
     return (
         <div className={classes.grow}>
-            <AppBar position='static' className={classes.appBar}>
-                <Toolbar>
-                    <IconButton
-                        edge='start'
-                        className={classes.menuButton}
-                        color='inherit'
-                        aria-label='open drawer'>
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography className={classes.title} variant='h6' noWrap>
-                        Essentialism
-                    </Typography>
-                    <div className={classes.grow} />
-                    <div className={classes.sectionDesktop}>
-                        <IconButton
-                            aria-label='show 4 new mails'
-                            color='inherit'>
-                            <Badge badgeContent={4} color='secondary'>
-                                <MailIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton
-                            aria-label='show 17 new notifications'
-                            color='inherit'>
-                            <Badge badgeContent={17} color='secondary'>
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton
-                            edge='end'
-                            aria-label='account of current user'
-                            aria-controls={menuId}
-                            aria-haspopup='true'
-                            onClick={handleProfileMenuOpen}
-                            color='inherit'>
-                            <AccountCircle />
-                        </IconButton>
-                    </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            aria-label='show more'
-                            aria-controls={mobileMenuId}
-                            aria-haspopup='true'
-                            onClick={handleMobileMenuOpen}
-                            color='inherit'>
-                            <MoreIcon />
-                        </IconButton>
-                    </div>
-                </Toolbar>
-            </AppBar>
-            <TopThree />
-            <ProjectsForm />
-            {renderMobileMenu}
-            {renderMenu}
-        </div>
-    );
-};
+        <AppBar position="static" className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography className={classes.title} variant="h6" noWrap>
+              Essentialism
+            </Typography>
+            {/* <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </div> */}
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              <IconButton aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={4} color="secondary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton aria-label="show 17 new notifications" color="inherit">
+                <Badge badgeContent={17} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </div>
+            <div className={classes.sectionMobile}>
+              <IconButton
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <TopThree handleEditing={handleEditing} editing={editing} />
+        <ProjectsForm handleEditing={handleEditing} editing={editing} />
+        {renderMobileMenu}
+        {renderMenu}
+            
+        <Fab onClick={handleEditing} className={classes.bottomLeftFixed}  color="primary" aria-label="add">
+            <SettingsIcon />
+        </Fab>
+      </div>
+
+    )
+}
+
 
 export default Dashboard;
