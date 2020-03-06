@@ -1,19 +1,4 @@
-import React, { useState, useEffect } from 'react';
-//Styling
-import {
-    Card,
-    CardActions,
-    CardContent,
-    Button,
-    Typography,
-    Fab,
-    Modal,
-    TextField
-} from '@material-ui/core';
-import { AddIcon } from '@material-ui/icons/Add';
-import { SettingsIcon } from '@material-ui/icons/Settings';
-import { makeStyles } from '@material-ui/core/styles';
-//Auth
+import React, { useState, useEffect } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 // import '../App.css';
 import { ClipLoader } from 'react-spinners';
@@ -408,4 +393,7 @@ const ProjectsForm = (props) => {
 }
 
 export default ProjectsForm
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of bddbf97... Merge branch 'clean-up' of https://github.com/Essentialism-2/Frontend into clean-up
