@@ -104,6 +104,9 @@ const useStyles = makeStyles({
   shapeCircle: {
     borderRadius: '50%',
   },
+  matchesTopThree: {
+      color: 'green'
+  }
 });
 
 const ProjectsForm = (props) => {
@@ -261,7 +264,7 @@ const ProjectsForm = (props) => {
             <div className={classes.container}>
                 {projects.map(project => 
                     
-                        // <Badge key={`${project.id} key`} color="secondary" badgeContent={project.values.filter(value => value.values_id === topThreeValues[0].Value_Id || value.values_id === topThreeValues[1].Value_Id  ).length}>
+                        <Badge key={`${project.id} key`} color="secondary" badgeContent={project.projectValues.filter(value => value.matchesTopThree === true).length}>
                     <Card key={project.id} className={classes.root} variant="outlined">
                             
                     <CardContent>
@@ -284,9 +287,10 @@ const ProjectsForm = (props) => {
                     </CardContent>
                     {!loading ?
                     <>
-                    <ul>
-                        {project.values.map(value => <li key={`${project.id} ${value.values_id}`}>{value.values_id}</li>)}
-                    </ul>
+                        <Typography variant="body2" component="p">
+                            <h4>Values for project:</h4>
+                            {project.projectValues.map(value => value.matchesTopThree ? <div className={classes.matchesTopThree}  key={`${project.id} ${value.values_id}`}> {value.name}</div>: <div key={`${project.id} ${value.values_id}`}> {value.name}</div>)}
+                        </Typography>
                         <Typography variant="body2" component="p">
                         <form
                                                     className={
@@ -353,7 +357,7 @@ const ProjectsForm = (props) => {
                                             />
                                         }
                     </Card>
-                                        // </Badge>
+                                        </Badge>
                 )}
             </div>
 
