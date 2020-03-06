@@ -16,19 +16,19 @@ const SignOut = props => {
 
     const logout = () => {
         localStorage.clear('token');
-        props.history.push('/')
+        props.history.push('/login');
     };
 
     return (
-        <Card>
+        // <Card>
             <Button
-                onClick={logout()}
-                className={classes.button}
+                onClick={() => logout()}
+                // className={classes.button}
                 color='primary'
                 variant='contained'>
                 Sign Out
             </Button>
-        </Card>
+        // </Card>
     );
 };
 
