@@ -4,19 +4,8 @@ import validate from "./validateLogin"
 import { Button, Card } from '@material-ui/core';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { withRouter } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(theme => ({
-	button: {
-        background: theme.pallette.primary.main,
-        '&:hover':{
-            background: theme.pallette.primary.dark
-        }
-	}
-}))
 
 const Register = props => {
-	const classes = useStyles();
 	const { handleChange, handleSubmit, values, errors } = useForm(submit, validate);
 	
 	function submit() {
@@ -30,7 +19,6 @@ const Register = props => {
 			console.log(res);
 		})
 		.catch(err => {
-			alert("All fields are required");
 			console.log('API Error ', err);
 		})
 
@@ -83,7 +71,7 @@ const Register = props => {
 					</div>
 				</div>
 
-				<Button type="submit" className={classes.button}>Submit</Button>
+				<Button type="submit">Submit</Button>
 
 			</form>
 		</Card>

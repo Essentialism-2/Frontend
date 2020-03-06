@@ -22,12 +22,7 @@ const useStyles = makeStyles(theme => ({
         overflow: 'auto'
     },
     button: {
-        margin: theme.spacing(0.5, 0),
-        background: theme.pallette.primary.main,
-        '&:hover':{
-            background: theme.pallette.primary.dark
-        }
-        
+        margin: theme.spacing(0.5, 0)
     }
 }));
 
@@ -72,10 +67,16 @@ const CuratedValues = () => {
             .catch(err => console.log('Curated GET error', err));
     }, []);
 
+    // const handleAllRight = () => {
+    //     setRight(right.concat(left));
+    //     setLeft([]);
+    // };
+
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
+        // setTopThree(checked)
     };
 
     const handleCheckedLeft = () => {
@@ -84,6 +85,28 @@ const CuratedValues = () => {
         setChecked(not(checked, rightChecked));
     };
     console.log('Checked', checked);
+
+
+    // const handleAllLeft = () => {
+    //     setLeft(left.concat(right));
+    //     setRight([]);
+    // };
+
+    // const setTopThree = checked => {
+    //     const userId = localStorage.getItem('id');
+    //     checked.map(item => {
+    //         console.log('Item', item)
+    //         axiosWithAuth()
+    //             .put(`/values/user/${userId}`, {
+    //                 value_id: item.Value_Id,
+    //                 top_three: true
+    //             })
+    //             .then(res => {
+    //                 console.log('PUT response', res)
+    //             })
+    //             .catch(err => console.log('PUT error', err));
+    //     });
+    // };
 
     const customList = left => (
         <Paper className={classes.paper}>
@@ -110,7 +133,7 @@ const CuratedValues = () => {
                                 primary={
                                     <Value
                                         name={value.Value_name}
-                                        description={value.description}
+                                        description={value.Value_description}
                                     />
                                 }
                             />
@@ -132,6 +155,15 @@ const CuratedValues = () => {
             <Grid item>{customList(left)}</Grid>
             <Grid item>
                 <Grid container direction='column' alignItems='center'>
+                    {/* <Button
+                        variant='outlined'
+                        size='small'
+                        className={classes.button}
+                        onClick={handleAllRight}
+                        disabled={left.length === 0}
+                        aria-label='move all right'>
+                        ≫
+                    </Button> */}
                     <Button
                         variant='outlined'
                         size='small'
@@ -150,6 +182,15 @@ const CuratedValues = () => {
                         aria-label='move selected left'>
                         &lt;
                     </Button>
+                    {/* <Button
+                        variant='outlined'
+                        size='small'
+                        className={classes.button}
+                        onClick={handleAllLeft}
+                        disabled={right.length === 0}
+                        aria-label='move all left'>
+                        ≪
+                    </Button> */}
                 </Grid>
             </Grid>
             <Grid item>{customList(right)}</Grid>
@@ -158,3 +199,15 @@ const CuratedValues = () => {
 };
 
 export default CuratedValues;
+
+// const values = [
+//     {
+//         title: 'Nothing'
+//     },
+//     {
+//         title: 'More nothing'
+//     },
+//     {
+//         title: 'Even more nothing'
+//     }
+// ];

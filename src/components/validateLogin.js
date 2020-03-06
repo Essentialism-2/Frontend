@@ -1,6 +1,12 @@
 export default function validate(values) {
 	let errors = {};
 
+	//console.log(values);
+	//Name Errors, doesn't apply to login page
+	// if(!values.name){
+	// 	errors.name = "Enter a name";			
+	// }
+
 	//Email Errors
 	if(!values.email) {
 		errors.email = "Email address is required";

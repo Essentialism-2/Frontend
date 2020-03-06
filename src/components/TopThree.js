@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-import { ClipLoader } from 'react-spinners';
+import { ClipLoader } from "react-spinners";
+
 
 // M-UI CARD
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,176 +25,165 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+
 const useStyles = makeStyles({
-    root: {
-        minWidth: 275,
-        maxWidth: 400
-    },
-    container: {
-        display: 'flex',
-        flexFlow: 'row wrap',
-        justifyContent: 'space-around',
-        padding: 20
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)'
-    },
-    title: {
-        fontSize: 14
-    },
-    pos: {
-        marginBottom: 12
-    },
-    valueRemoveContainer: {
-        display: 'flex',
-        justifyContent: 'flex-end'
-    },
-    formControl: {
-        // margin: theme.spacing(1),
-        minWidth: 120
-    }
+  root: {
+    minWidth: 275,
+    maxWidth: 400
+  },
+  container: {
+    display: 'flex',
+    flexFlow: 'row wrap',
+    justifyContent: 'space-around',
+    padding: 20
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+  valueRemoveContainer: {
+      display: 'flex',
+      justifyContent: 'flex-end'
+  },
+  formControl: {
+    // margin: theme.spacing(1),
+    minWidth: 120,
+  },
 });
 
-const TopThree = (props) => {
+const TopThree = () => {
     const classes = useStyles();
-    const userID = localStorage.getItem('id');
-    const [topThreeValues, setTopThreeValues] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [listOfValues, setListOfValues] = useState([]);
+
+    const [ topThreeValues, setTopThreeValues ] = useState([]);
+    const [ loading, setLoading ] = useState(false)
+    const [ listOfValues, setListOfValues ] = useState([])
     const [open, setOpen] = React.useState(false);
     const [newValue, setNewValue] = useState({});
 
+
     const handleChange = event => {
-        setNewValue({ value_id: event.target.value, top_three: true });
-        console.log('new value set', newValue);
-    };
-
-    const handleClickOpen = () => {
+        setNewValue({value_id: event.target.value, top_three: true});
+        console.log('new value set', newValue)
+      };
+    
+      const handleClickOpen = () => {
         setOpen(true);
-    };
-
-    const handleClose = () => {
+      };
+    
+      const handleClose = () => {
         setOpen(false);
-    };
+      };
 
-    if (topThreeValues.length < 3) {
-        setTopThreeValues([...topThreeValues, { addValue: true , Value_Id: 0}]);
+    if(topThreeValues.length < 3) {
+        setTopThreeValues(
+           [ ...topThreeValues,
+                {addValue: true, key: Math.random()}
+            ]
+
+        )
     }
 
     useEffect(() => {
         axiosWithAuth()
-            .get('/values/')
-            .then(res => {
-                // console.log('all values', res);
-                setListOfValues(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        .get('/values/')
+        .then(res => {
+            console.log('all values', res)
+            setListOfValues(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
         // setListOfValues()
-    }, []);
+    },[])
 
-    useEffect((userId) => {
-        setLoading(true);
+    useEffect(() => {
+        setLoading(true)
         axiosWithAuth()
-            .get(
-                `/values/user/${userId}`
-            )
-            .then(res => {
-                // console.log(
-                    // 'your top three values',
-                    // res.data.filter(item => item.Top_Three === true)
-                // );
-                setTopThreeValues(
-                    res.data.filter(item => item.Top_Three === true)
-                );
-                // console.log('all your values', res.data);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.log(err);
-                setLoading(false);
-            });
-    }, []);
+        .get(`/values/user/2`)
+        .then(res => {
+            console.log('your top three values', res.data.filter(item => item.Top_Three === true))
+            setTopThreeValues(res.data.filter(item => item.Top_Three === true))
+            console.log('all your values', res.data)
+            setLoading(false)
 
-    const changeTopThree = (valueId, userId) => {
-        // console.log(valueId);
+        })
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
+    },[])
+
+    const changeTopThree = (valueId) => {
+        console.log(valueId)
         let send = {
             value_id: valueId,
             top_three: false
-        };
-        setLoading(true);
+        }
+        setLoading(true)
         axiosWithAuth()
-            .delete(
-                `/values/delete/${valueId}`
-            )
+        .delete(`/values/delete/${valueId}`)
+        .then(res => {
+            console.log(res)
+            axiosWithAuth()
+
+            .get(`/values/user/2`)
             .then(res => {
-                // console.log(res);
-                axiosWithAuth()
-                    .get(
-                        `/values/user/${userId}`
-                    )
-                    .then(res => {
-                        // console.log(
-                        //     res.data.filter(item => item.Top_Three === true)
-                        // );
-                        setTopThreeValues(
-                            res.data.filter(item => item.Top_Three === true)
-                        );
-                        setLoading(false);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        setLoading(false);
-                    });
+                console.log(res.data.filter(item => item.Top_Three === true))
+                setTopThreeValues(res.data.filter(item => item.Top_Three === true))
+                setLoading(false)
             })
             .catch(err => {
-                console.log(err);
-                setLoading(false);
-            });
-    };
+                console.log(err)
+                setLoading(false)
+            })
+        })
+        .catch( err => {
+            console.log(err)
+            setLoading(false)
+        })
+    }
 
-    const addValueToUser = (userId) => {
-        setLoading(true);
+    const addValueToUser = () => {
+        setLoading(true)
 
         axiosWithAuth()
-            .post(
-                `/values/user/${userId}`,
-                newValue
-            )
+        .post('/values/user/1', newValue)
+        .then(res => {
+            console.log(res)
+            setOpen(false);
+            axiosWithAuth()
+
+            .get(`/values/user/2`)
             .then(res => {
-                // console.log(res);
-                setOpen(false);
-                axiosWithAuth()
-                    .get(
-                        `/values/user/${userId}`
-                    )
-                    .then(res => {
-                        console.log(
-                            res.data.filter(item => item.Top_Three === true)
-                        );
-                        setTopThreeValues(
-                            res.data.filter(item => item.Top_Three === true)
-                        );
-                        setLoading(false);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        setLoading(false);
-                    });
+                console.log(res.data.filter(item => item.Top_Three === true))
+                setTopThreeValues(res.data.filter(item => item.Top_Three === true))
+                setLoading(false)
             })
             .catch(err => {
-                console.log(err);
-                setLoading(false);
-            });
-    };
+                console.log(err)
+                setLoading(false)
+            })
+            
+        })
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+
+        })
+    }
+
+
 
     return (
         <div>
             <h1>Your Top 3 Values</h1>
-
             {!loading ? 
             <div className={classes.container}>
                 {topThreeValues.map(item => 
@@ -261,20 +251,22 @@ const TopThree = (props) => {
                     // :
                     //     <p>some other stuff</p>
 
-
                     )}
-                </div>
-            ) : (
-                <ClipLoader
-                    //   css={override}
-                    size={150}
-                    //size={"150px"} this also works
-                    color={'#123abc'}
-                    loading={loading}
-                />
-            )}
+                
+            </div>
+            :
+            <ClipLoader
+        //   css={override}
+          size={150}
+          //size={"150px"} this also works
+          color={"#123abc"}
+          loading={loading}
+        />
+}
+
         </div>
-    );
-};
+
+    )
+}
 
 export default TopThree;

@@ -1,41 +1,33 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch
-} from 'react-router-dom';
-//Components
 import ValuesForm from './components/ValuesForm';
 import './App.css';
 import Login from './components/Login';
 import Register from './components/Register';
+import SignOut from './components/SignOut';
 import Dashboard from './components/Dashboard';
-import PrivateRoute from './utils/PrivateRoute';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
-const theme = createMuiTheme({
-    pallette: {
-        primary: {
-            main: '#38B4E2',
-            dark: '#006666'
-        }
-    }
-});
+import TopThree from './components/TopThree';
 
 const App = () => {
     return (
         <div className='App'>
-            <ThemeProvider theme={theme}>
-                <Switch>
-                    <Route exact path='/' component={LandingPage} />
-                    <Route path='/login' component={Login} />
-                    <Route path='/register' component={Register} />
-                    <PrivateRoute path='/dashboard' component={Dashboard} />
-                    <Route path='/values-form' component={ValuesForm} />>
-                    <Route path='/signout' component={SignOut} />
-                </Switch>
-            </ThemeProvider>
+            <Switch>
+                <Route exact path='/' component={LandingPage} />
+                <Route path='/login'>
+                    <Login />
+                </Route>
+                <Route path='/register'>
+                    <Register />
+                </Route>
+                <Route path='/values-form'>
+                    <ValuesForm />
+                </Route>
+                <Route path='/signout'>
+                    <SignOut />
+                </Route>
+                <Route path='/dashboard' component={Dashboard} />
+            </Switch>
         </div>
     );
 };
