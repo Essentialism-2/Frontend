@@ -9,8 +9,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                 localStorage.getItem('token') ? (
                     <Component {...props} />
                 ) : (
+<<<<<<< HEAD
                     <Redirect to='/dashboard' />
 
+=======
+                    <Redirect to='/ChangeThis' />
+>>>>>>> parent of bddbf97... Merge branch 'clean-up' of https://github.com/Essentialism-2/Frontend into clean-up
                 )
             }
         />
